@@ -62,34 +62,24 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
         const remove3 = editor.registerCommand(KEY_ENTER_COMMAND, (e) => {
             if (show) {
                 e.preventDefault()
-                //TODO
+
                 if (matchUsers.length === 0) { return false }
                 const selection = $getSelection()
                 const focusOffset = selection.focus.offset
                 //console.log(selection)
                 const textNode = $getNodeByKey(selection.focus.key)
-
                 const fullText = textNode.getTextContent()
 
-
-
                 const word = getWordAt(fullText, focusOffset - 1)
-                //    console.log(word)
 
-                //    console.log(fullText.slice(0, focusOffset) + "|||" + fullText.slice(focusOffset, fullText.length))
 
                 let part1 = fullText.slice(0, focusOffset)
                 let part2 = fullText.slice(focusOffset, fullText.length)
-
-
                 //  console.log("part1 is:" + part1)
-
                 if (!part1) { part1 = "" }
 
                 if (part1.length > 0) {
-
                     while ((part1.length > 0) && part1.at(-1).match(/[A-Za-z0-9_\u4e00-\u9fa5@]/)) {
-
                         part1 = part1.slice(0, -1)
                     }
                 }
@@ -100,39 +90,25 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                     }
                 }
 
-                console.log("-->", "^" + part1 + "|" + part2 + "$")
+                //console.log("-->", "^" + part1 + "|" + part2 + "$")
 
-                // textNode.__style = node.__style
-                // textNode.__format = node.__format
-                // textNode.__detail = node.__detail
-                // textNode.__mode = node.__mode
 
                 textNode.setTextContent(part1 + "" + part2)
                 textNode.splitText(part1.length)//.map(n => n.toggleUnmergeable())
 
-
                 const newSelection = $createRangeSelection();
-                
-                newSelection.anchor.set(textNode.getKey(), part1.length , "text")
-                newSelection.focus.set(textNode.getKey(), part1.length , "text")
+                newSelection.anchor.set(textNode.getKey(), part1.length, "text")
+                newSelection.focus.set(textNode.getKey(), part1.length, "text")
                 newSelection.format = selection.format
                 $setSelection(newSelection)
 
 
-                // selection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length],tabNum, undefined)])
+                newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
 
-                // const newSelection = $createRangeSelection();
-                // newSelection.anchor.set(selection.focus.key, part1.length && part2.length, "text")
-                // newSelection.focus.set(selection.focus.key, part1.length && part2.length, "text")
-                // newSelection.format = selection.format
-                // $setSelection(newSelection)
-
-                //     
-
-                if (!part1 && !part2) { textNode.insertBefore(new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)) }
-                else {
-                    newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
-                }
+                // if (!part1 && !part2) { textNode.insertBefore(new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)) }
+                // else {
+                //   newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
+                // }
 
 
                 setShow(false)
@@ -302,25 +278,16 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
 
                     onClick={function (e) {
                         e.preventDefault()
+
                         editor.update(() => {
-                            //TODO
 
                             const selection = $getSelection()
                             const focusOffset = selection.focus.offset
-
                             const textNode = $getNodeByKey(selection.focus.key)
-
                             const fullText = textNode.getTextContent()
-
-
-
                             const word = getWordAt(fullText, focusOffset - 1)
-
-
                             let part1 = fullText.slice(0, focusOffset)
                             let part2 = fullText.slice(focusOffset, fullText.length)
-
-
 
                             if (part1.length > 0) {
                                 while ((part1.length > 0) && part1.at(-1).match(/[A-Za-z0-9_\u4e00-\u9fa5@]/)) {
@@ -333,37 +300,27 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                                     part2 = part2.substring(1)
                                 }
                             }
-                           // textNode.setTextContent(part1 + "" + part2)
+
 
                             textNode.setTextContent(part1 + "" + part2)
                             textNode.splitText(part1.length)//.map(n => n.toggleUnmergeable())
-            
-            
+
                             const newSelection = $createRangeSelection();
-                            
-                            newSelection.anchor.set(textNode.getKey(), part1.length , "text")
-                            newSelection.focus.set(textNode.getKey(), part1.length , "text")
+                            newSelection.anchor.set(textNode.getKey(), part1.length, "text")
+                            newSelection.focus.set(textNode.getKey(), part1.length, "text")
                             newSelection.format = selection.format
                             $setSelection(newSelection)
-
-
-
-                            if (!part1 && !part2) { textNode.insertBefore(new MentionNode(e.currentTarget.innerText, tabNum, undefined)) }
-                            else {
-                                newSelection.insertNodes([new MentionNode(e.currentTarget.innerText, tabNum, undefined)])
-                            }
-
-                            //console.log(e.currentTarget.innerText)
+                            newSelection.insertNodes([new MentionNode(e.currentTarget.innerText, tabNum, undefined)])
                             setShow(false)
 
-                        })
+                        }, { onUpdate: function () { } })
+
+
+
 
                     }}
                 >{user}</div>
             })}
-            {/* <div style={{ backgroundColor: (tabNum % 3) === 0 ? "yellow" : "transparent" }}>abc</div>
-            <div style={{ backgroundColor: (tabNum % 3) === 1 ? "yellow" : "transparent" }}>defg</div>
-            <div style={{ backgroundColor: (tabNum % 3) === 2 ? "yellow" : "transparent" }}>hijkl</div> */}
         </div>
 
 
@@ -397,8 +354,9 @@ function getWordAt(str, pos) {
 
 
 
-let debounceTimer;
 
+
+let debounceTimer;
 function makeFetchRequest(query, callbackFn) {
     // Clear the previous debounce timer
     clearTimeout(debounceTimer);
