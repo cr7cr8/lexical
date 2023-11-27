@@ -431,7 +431,7 @@ export function LinkButton() {
             const selection = $getSelection()
             if (!selection) return
             selection.getNodes().forEach(node => {
-                console.log(node.getType())
+               // console.log(node.getType())
                 if (node.getType() === "MentionNode") {
                     setHasMentionNode(true);
 

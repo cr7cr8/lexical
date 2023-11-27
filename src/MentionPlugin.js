@@ -33,7 +33,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
     const [tabNum, setTabNum] = useState(30000)
     const [matchUsers, setMatchUsers] = useState([])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
 
 
         const remove1 = editor.registerCommand(KEY_ARROW_UP_COMMAND, (e) => {
@@ -84,7 +84,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
 
                 //  console.log("part1 is:" + part1)
 
-                //     if (!part1) { part1 = "" }
+                if (!part1) { part1 = "" }
 
                 if (part1.length > 0) {
 
@@ -93,15 +93,31 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                         part1 = part1.slice(0, -1)
                     }
                 }
-                //   if (!part2) { part2 = "" }
+                if (!part2) { part2 = "" }
                 if (part2.length > 0) {
                     while ((part2.length > 0) && part2.at(0).match(/[A-Za-z0-9_\u4e00-\u9fa5@]/)) {
                         part2 = part2.substring(1)
                     }
                 }
 
-                //console.log("-->", "^" + part1 + "|" + part2 + "$")
+                console.log("-->", "^" + part1 + "|" + part2 + "$")
+
+                // textNode.__style = node.__style
+                // textNode.__format = node.__format
+                // textNode.__detail = node.__detail
+                // textNode.__mode = node.__mode
+
                 textNode.setTextContent(part1 + "" + part2)
+                textNode.splitText(part1.length)//.map(n => n.toggleUnmergeable())
+
+
+                const newSelection = $createRangeSelection();
+                
+                newSelection.anchor.set(textNode.getKey(), part1.length , "text")
+                newSelection.focus.set(textNode.getKey(), part1.length , "text")
+                newSelection.format = selection.format
+                $setSelection(newSelection)
+
 
                 // selection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length],tabNum, undefined)])
 
@@ -115,7 +131,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
 
                 if (!part1 && !part2) { textNode.insertBefore(new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)) }
                 else {
-                    selection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
+                    newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
                 }
 
 
@@ -265,9 +281,9 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
 
 
             }}
-            onClick={function (e) {
-                console.log("click")
-            }}
+            // onClick={function (e) {
+            //     console.log("click")
+            // }}
             ref={ref}
         //tabIndex="0"
         >
@@ -277,7 +293,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                     key={index} style={{ backgroundColor: (tabNum % matchUsers.length) === index ? "yellow" : undefined }}
                     className='tabname'
                     onMouseOver={function (e) {
-                        console.log(e.currentTarget.innerText)
+                        //   console.log(e.currentTarget.innerText)
                         //   e.currentTarget.style.backgroundColor="cornflowerblue"
                     }}
                     onMouseOut={function (e) {
@@ -317,14 +333,27 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                                     part2 = part2.substring(1)
                                 }
                             }
+                           // textNode.setTextContent(part1 + "" + part2)
+
                             textNode.setTextContent(part1 + "" + part2)
+                            textNode.splitText(part1.length)//.map(n => n.toggleUnmergeable())
+            
+            
+                            const newSelection = $createRangeSelection();
+                            
+                            newSelection.anchor.set(textNode.getKey(), part1.length , "text")
+                            newSelection.focus.set(textNode.getKey(), part1.length , "text")
+                            newSelection.format = selection.format
+                            $setSelection(newSelection)
+
+
 
                             if (!part1 && !part2) { textNode.insertBefore(new MentionNode(e.currentTarget.innerText, tabNum, undefined)) }
                             else {
-                                selection.insertNodes([new MentionNode(e.currentTarget.innerText, tabNum, undefined)])
+                                newSelection.insertNodes([new MentionNode(e.currentTarget.innerText, tabNum, undefined)])
                             }
 
-                            console.log(e.currentTarget.innerText)
+                            //console.log(e.currentTarget.innerText)
                             setShow(false)
 
                         })

@@ -10,11 +10,10 @@ import React from "react"
 
 function App() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh" }}  >
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh",backgroundColor:"gray" }}  >
 
 
       {/* <Editor/> */}
-      <Editor />
       <div style={{marginTop:"50px"}}>
       <Editor2 />
       </div>

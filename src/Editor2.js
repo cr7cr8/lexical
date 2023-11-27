@@ -61,13 +61,8 @@ import { MentionPlugin } from "./MentionPlugin"
 import { MentionNode } from './MentionNode';
 import { SepNode } from './SepNode';
 
-//import { CustomParagraphNode, BannerNode, BannerPlugin, INSERT_BANNER_COMMAND, $createBannerNode, TableNode, TablePlugin } from './CustomParagraphNode';
 
 import { BannerNode, BannerCommandPlugin, BannerButton } from './BannerCommandPlugin';
-
-
-
-
 
 
 
@@ -134,59 +129,83 @@ export function validateUrl(url) {
 
 export function Editor2() {
 
-  const initialConfig = {
-    namespace: 'MyEditor',
-    onError: (err) => console.error(err),
-    nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode],
-    theme: {
-      text: {
-        bold: "text-bold",
-        italic: "text-italic",
-        underline: "text-underline",
-        code: 'text-code',
-        highlight: 'text-highlight',
-        strikethrough: 'text-strikethrough',
-        subscript: 'text-subscript',
-        superscript: 'text-superscript',
-      },
-      bannerGraph: "bannerGraph",
-      paragraph: "margin0",
-      heading: {
-        h1: 'margin0',
-        h2: 'margin0',
-        h3: 'margin0',
-        h4: 'margin0',
-        h5: 'margin0',
-        h6: 'margin0',
-      },
-      list: {
-        nested: {
-          listitem: 'editor-nested-listitem',
-        },
-        ol: 'editor-list-ol',
-        ul: 'editor-list-ul',
-        listitem: 'editor-listItem',
-        listitemChecked: 'editor-listItemChecked',
-        listitemUnchecked: 'editor-listItemUnchecked',
-      },
-      beautifulMentions: {
-        "@": "mentionTheme",
-        "@Focused": "mention",
-        "#": "mention3"
-      },
-
-    }
-
-
-
-
-  }
-
   return (
     <>
 
       <div style={{ width: "600px", backgroundColor: "pink", marginLeft: "50px" }}>
-        <LexicalComposer initialConfig={initialConfig}>
+        <LexicalComposer
+          initialConfig={{
+            namespace: 'MyEditor',
+            onError: (err) => console.error(err),
+            nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode],
+            theme: {
+
+              text: {
+                bold: "text-bold",
+                italic: "text-italic",
+                underline: "text-underline",
+                code: 'text-code',
+                highlight: 'text-highlight',
+                strikethrough: 'text-strikethrough',
+                subscript: 'text-subscript',
+                superscript: 'text-superscript',
+              },
+              bannerGraph: "bannerGraph",
+              paragraph: "margin0",
+              heading: {
+                h1: 'margin0',
+                h2: 'margin0',
+                h3: 'margin0',
+                h4: 'margin0',
+                h5: 'margin0',
+                h6: 'margin0',
+              },
+              list: {
+                nested: {
+                  listitem: 'editor-nested-listitem',
+                },
+                ol: 'editor-list-ol',
+                ul: 'editor-list-ul',
+                listitem: 'editor-listItem',
+                listitemChecked: 'editor-listItemChecked',
+                listitemUnchecked: 'editor-listItemUnchecked',
+              },
+              beautifulMentions: {
+                "@": "mentionTheme",
+                "@Focused": "mention",
+                "#": "mention3"
+              },
+
+            },
+
+            // editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
+            // "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+            editorState: function (editor) {
+              const root = $getRoot();
+              if (root.getFirstChild() === null) {
+
+                const paragraph = $createParagraphNode();
+                paragraph.append(
+                  $createTextNode("men^^^@at&&& built with "),
+                  new MentionNode("ggude7", 23),
+                  $createTextNode("The playground is a demo environment built with hihihihihihihihi "),
+                  $createTextNode("@lexical/react").toggleFormat("code"),
+                  $createTextNode(".bus"),
+                  $createLinkNode("http://baidu.com", { target: "new", title: "hihihi", }).append(
+                    $createTextNode("abcdefhilmnorstuv"),
+                  ),
+                  $createTextNode(" Try typing in "),
+                  $createTextNode("some text").toggleFormat("bold"),
+                  $createTextNode(" with "),
+                  $createTextNode("different").toggleFormat("italic"),
+                  $createTextNode(" free the cat.").setStyle("color:red")
+                );
+                root.append(paragraph);
+
+              }
+            }
+
+          }}>
           <RichTextPlugin
             contentEditable={<ContentEditable
               style={{ backgroundColor: "wheat", borderRadius: "1px", borderStyle: "solid", borderWidth: "1px" }} />
@@ -204,15 +223,11 @@ export function Editor2() {
               return `https://dummyjson.com/users?skip=0&limit=100&pattern=${searchPattern}`
             }}
             organizeResturnedList={function (data, searchPattern) {
-              const users = Array.from(data.users).filter(user => {
+              return Array.from(data.users).filter(user => {
                 return user.username.indexOf(searchPattern) >= 0
               }).map(user => user.username).sort(function (name1, name2) {
                 return name1.indexOf(searchPattern) - name2.indexOf(searchPattern)
               })
-
-
-
-              return users
             }}
 
           />
@@ -275,7 +290,7 @@ export function Editor2() {
           <div><b>Banner</b></div>
           <BannerCommandPlugin />
           <BannerButton />
-          <br /><div><b>Tree</b></div>
+          <div><b>Tree</b></div>
           <TreeViewPlugin />
 
           {/* <LexicalClickableLinkPlugin /> */}
