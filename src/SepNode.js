@@ -16,12 +16,14 @@ export class SepNode extends DecoratorNode {
 
     }
     static importJSON(...args) {
-        return super.importJSON(...args)
+        return new SepNode()
     }
 
     exportJSON() {
         return {
-            ...super.exportJSON(),
+            //...super.exportJSON(),
+            type: "SepNode"
+
         };
     }
 
@@ -72,7 +74,7 @@ export class SepNode extends DecoratorNode {
 
 function ReactSepNode() {
     return (
-        <span style={{ borderWidth: "0px",borderLeftWidth:"4px", borderStyle: "solid", borderColor: "gray" }} />
+        <span style={{ borderWidth: "0px", borderLeftWidth: "px", borderStyle: "solid", borderColor: "gray" }} />
     )
 }
 
@@ -97,10 +99,10 @@ export function SepNodePlugin({ node, ...props }) {
                 //console.log(nodeKey, mutation)
                 editor.update(function () {
                     const sepNode = $getNodeByKey(nodeKey)
-                    if(sepNode?.getPreviousSibling()?.getType()==="SepNode"){
+                    if (sepNode?.getPreviousSibling()?.getType() === "SepNode") {
                         sepNode?.getPreviousSibling()?.remove()
                     }
-                  
+
                 })
 
 

@@ -146,3 +146,7 @@ p {
 .tabname:hover{
   background-color:cornflowerblue;
 }
+
+.mantionNode{
+  background-color: lightgreen;
+}

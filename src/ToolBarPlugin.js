@@ -57,6 +57,7 @@ import { BeautifulMentionsPlugin, BeautifulMentionNode } from "lexical-beautiful
 import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugin';
 
 import { LinkCommandPlugin, INSERT_LINK_COMMAND, REMOVE_LINK_COMMAND } from "./LinkCommandPlugin"
+import { SepNode } from './SepNode';
 
 export function ToolBarPlugin({ buttons, ...props }) {
 
@@ -153,9 +154,13 @@ export function FormatButton() {
             ['Bold', 'Italic', 'Underline', 'Code', 'Highlight', 'Strikethrough', 'Subscript', 'Superscript']
                 .map((value, index) => <button key={index} onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, value.toLowerCase())
-
+                    
                     editor.update(() => {
-                        const selection = $getSelection()
+                        const selection = $getSelection() 
+                        $getSelection().getNodes().shift()?.insertBefore(new SepNode())
+                        $getSelection().getNodes().pop()?.insertAfter(new SepNode())
+                       
+
                         const newSelection = $createRangeSelection();
                         newSelection.anchor.set(selection.focus.key, selection.focus.offset, "text")
                         newSelection.focus.set(selection.focus.key, selection.focus.offset, "text")

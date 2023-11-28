@@ -151,6 +151,7 @@ export function Editor2() {
                 superscript: 'text-superscript',
               },
               bannerGraph: "bannerGraph",
+              mantionNode: "mantionNode",
               paragraph: "margin0",
               heading: {
                 h1: 'margin0',
@@ -180,30 +181,34 @@ export function Editor2() {
 
             // editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
             // "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
-            editorState: function (editor) {
-              const root = $getRoot();
-              if (root.getFirstChild() === null) {
 
-                const paragraph = $createParagraphNode();
-                paragraph.append(
-                  $createTextNode("men^^^@at&&& built with "),
-                  new MentionNode("ggude7", 23),
-                  $createTextNode("The playground is a demo environment built with hihihihihihihihi "),
-                  $createTextNode("@lexical/react").toggleFormat("code"),
-                  $createTextNode(".bus"),
-                  $createLinkNode("http://baidu.com", { target: "new", title: "hihihi", }).append(
-                    $createTextNode("abcdefhilmnorstuv"),
-                  ),
-                  $createTextNode(" Try typing in "),
-                  $createTextNode("some text").toggleFormat("bold"),
-                  $createTextNode(" with "),
-                  $createTextNode("different").toggleFormat("italic"),
-                  $createTextNode(" free the cat.").setStyle("color:red")
-                );
-                root.append(paragraph);
+            //   editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            //    editorState:`{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"banner","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            // editorState: function (editor) {
+            //   const root = $getRoot();
+            //   if (root.getFirstChild() === null) {
 
-              }
-            }
+            //     const paragraph = $createParagraphNode();
+            //     paragraph.append(
+            //       $createTextNode("men^^^@at&&& built with "),
+            //       new MentionNode("ggude7", 23),
+            //       $createTextNode("The playground is a demo environment built with hihihihihihihihi "),
+            //       $createTextNode("@lexical/react").toggleFormat("code"),
+            //       $createTextNode(".bus"),
+            //       $createLinkNode("http://baidu.com", { target: "new", title: "hihihi", }).append(
+            //         $createTextNode("abcdefhilmnorstuv"),
+            //       ),
+            //       $createTextNode(" Try typing in "),
+            //       $createTextNode("some text").toggleFormat("bold"),
+            //       $createTextNode(" with "),
+            //       $createTextNode("different").toggleFormat("italic"),
+            //       $createTextNode(" free the cat.").setStyle("color:red")
+            //     );
+            //     root.append(paragraph);
+
+            //   }
+            // }
 
           }}>
           <RichTextPlugin
@@ -246,18 +251,7 @@ export function Editor2() {
             const keys = editor.getEditorState().read(
 
               () => {
-                // console.log($getSelection().anchor, $getSelection().focus)
-
-                // //  console.log($isRootNode($getSelection().anchor))
-                // console.log($getSelection().anchor.getNode().getParents())
-                // console.log($getSelection().focus.getNode().getParents())
-
-                // console.log("isCollapsed", $getSelection().isCollapsed())
-                // console.log("israngeselection", $isRangeSelection($getSelection()))
-
-
-                // const keys = $getRoot().getChildrenKeys()
-                // return keys
+               // console.log(JSON.stringify(editor.getEditorState().toJSON()))
               }
 
             );

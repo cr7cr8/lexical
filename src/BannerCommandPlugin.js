@@ -11,6 +11,7 @@ import {
     INDENT_CONTENT_COMMAND,
     COMMAND_PRIORITY_NORMAL,
     ElementNode,
+    $getNodeByKey,
 
 } from 'lexical';
 import { LexicalComposer, } from '@lexical/react/LexicalComposer';
@@ -22,7 +23,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 import { RichTextPlugin, richTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { $setBlocksType, $patchStyleText } from '@lexical/selection'
+import { $setBlocksType, $patchStyleText, $isAtNodeEnd } from '@lexical/selection'
 import { HeadingNode, $createHeadingNode } from '@lexical/rich-text'
 
 
@@ -67,12 +68,36 @@ import { SepNode } from './SepNode';
 export class BannerNode extends ElementNode {
 
 
+
     static clone(node) {
         return new BannerNode(node.__key);
     }
 
     static getType() {
         return "banner";
+    }
+
+    static importJSON(...args) {
+
+        return new BannerNode()
+
+    }
+
+    exportJSON() {
+
+
+        // console.log("====",{...super.exportJSON()})
+        return {
+            ...super.exportJSON(),
+            type: "banner",
+            //    version: 1,
+            //   children: [],
+            //customValue: "anything you like",
+            //   format: "",
+            //  indent: 1,
+            //  direction: null,
+
+        };
     }
 
     /**
@@ -92,57 +117,121 @@ export class BannerNode extends ElementNode {
         return element;
     }
 
-    static importJSON(...args) {
-        return super.importJSON(...args)
-    }
 
-
-
-    exportJSON() {
-
-
-        // console.log("====",{...super.exportJSON()})
-        return {
-            ...super.exportJSON(),
-            type: "banner",
-            //    version: 1,
-            //   children: [],
-            customValue: "anything you like",
-            //   format: "",
-            //  indent: 1,
-            //  direction: null,
-
-        };
-    }
 
 
     /**
      * Node should be set to paragraph when user delete all content
      */
     collapseAtStart(rangeSelection) {
-        const paragraph = $createParagraphNode();
-        const children = this.getChildren();
-        children.forEach((child) => paragraph.append(child));
-        this.replace(paragraph);
+        //  const paragraph = $createParagraphNode();
+        //  const children = this.getChildren();
+        //  children.forEach((child) => paragraph.append(child));
+        //  this.replace(paragraph,true);
 
-        return true;
+        if (this.getChildrenSize() === 0) {
+
+            this.remove()
+        }
+        else if (this.getFirstChild().getType() === "linebreak") {
+
+            this.getFirstChild().remove()
+        }
+        else {
+
+            this.replace($createParagraphNode(), true)
+
+            return true;
+        }
+
+
     }
 
     /**
      * Node should be set to paragraph when user press Enter.
      * Node will remain the same on Shift+Enter
      */
+    // insertNewAfter(rangeSelection, shouldRestoreSelection) {
+
+    //     // if (($isAtNodeEnd(rangeSelection.focus))&&(this.getLastChild().getType() === "linebreak")) {
+    //     //     const paragraph = $createParagraphNode();
+    //     //     const direction = this.getDirection();
+    //     //     paragraph.setDirection(direction);
+    //     //     this.insertAfter(paragraph, shouldRestoreSelection);
+    //     //     return paragraph;
+    //     // }
+    //     // if (($getNodeByKey(rangeSelection.focus.key).getType() === "banner")&&(this.getLastChild().getType() === "linebreak")) {
+    //     //     console.log(shouldRestoreSelection, rangeSelection)
+    //         const paragraph = $createParagraphNode();
+    //         const direction = this.getDirection();
+    //         paragraph.setDirection(direction);
+    //         this.insertAfter(paragraph, shouldRestoreSelection);
+    //     //     console.log(this.getLastChild().getType())
+    //     //     this.getLastChild().remove()
+
+    //          return paragraph;
+    //     // }
+    //     // if (this.getLastChild().getType() === "linebreak") {
+    //     //     const paragraph = $createParagraphNode();
+    //     //     const direction = this.getDirection();
+    //     //     paragraph.setDirection(direction);
+    //     //     this.insertAfter(paragraph, shouldRestoreSelection);
+    //     //     this.getLastChild().remove()
+
+    //     //     return paragraph;
+    //     // }
+    //    // else {
+
+    //         console.log(shouldRestoreSelection, rangeSelection)
+    //         return super.insertNewAfter(rangeSelection, shouldRestoreSelection)
+    //    // }
+
+
+    // }
+
     insertNewAfter(rangeSelection, shouldRestoreSelection) {
-        console.log(shouldRestoreSelection)
-        const paragraph = $createParagraphNode();
-        const direction = this.getDirection();
-        paragraph.setDirection(direction);
-        this.insertAfter(paragraph, shouldRestoreSelection);
 
-        return paragraph;
+        //   console.log($isAtNodeEnd(rangeSelection.focus),rangeSelection)
+
+
+
+
+        if (($isAtNodeEnd(rangeSelection.focus)) && (this.getLastChild().getType() === "linebreak") && ($getNodeByKey(rangeSelection.focus.key).getType() === "banner")) {
+            const paragraph = $createParagraphNode();
+            const direction = this.getDirection();
+            paragraph.setDirection(direction);
+            this.insertAfter(paragraph, shouldRestoreSelection);
+            this.getLastChild().remove()
+            return paragraph;
+        }
+        // if (($getNodeByKey(rangeSelection.focus.key).getType() === "banner")&&(this.getLastChild().getType() === "linebreak")) {
+        //     console.log(shouldRestoreSelection, rangeSelection)
+        //     const paragraph = $createParagraphNode();
+        //     const direction = this.getDirection();
+        //     paragraph.setDirection(direction);
+        //     this.insertAfter(paragraph, shouldRestoreSelection);
+        //     console.log(this.getLastChild().getType())
+        //     this.getLastChild().remove()
+
+        //      return paragraph;
+        // }
+        // if (this.getLastChild().getType() === "linebreak") {
+        //     const paragraph = $createParagraphNode();
+        //     const direction = this.getDirection();
+        //     paragraph.setDirection(direction);
+        //     this.insertAfter(paragraph, shouldRestoreSelection);
+        //     this.getLastChild().remove()
+
+        //     return paragraph;
+        // }
+        else {
+
+            //   console.log(shouldRestoreSelection, rangeSelection)
+            return super.insertNewAfter(rangeSelection, shouldRestoreSelection)
+        }
+
+
     }
-
-
 
 
 }
@@ -164,9 +253,29 @@ export function BannerCommandPlugin() {
             INSERT_BANNER_COMMAND,
             () => {
                 const selection = $getSelection();
-                if ($isRangeSelection(selection)) {
-                    $setBlocksType(selection, $createBannerNode);
+
+                const allNodes = selection.getNodes()
+                console.log(allNodes)
+
+                let node = allNodes[0]
+
+
+                while (node.getParent().getType() !== "root") {
+                    node = node.getParent()
                 }
+                //console.log(node)
+                node.replace(new BannerNode(), true)
+
+                // console.log(allNodes[0].getFirstDescendant())
+                // console.log("is at node end", $isAtNodeEnd(selection.focus))
+                // console.log(selection)
+                // allNodes[0].isChil
+
+
+
+                // if ($isRangeSelection(selection)) {
+                //     $setBlocksType(selection, $createBannerNode);
+                // }
                 return true;
             },
             COMMAND_PRIORITY_NORMAL,
@@ -176,7 +285,7 @@ export function BannerCommandPlugin() {
 
     }, [editor])
 
-   
+
 
 
 
@@ -191,6 +300,24 @@ export function BannerButton() {
     const [editor] = useLexicalComposerContext()
 
     return (
-        <button onClick={() => { editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined) }}>Banner</button>
+        <button onClick={() => {
+
+            editor.getEditorState().read(() => {
+                let shouldBanner = true
+
+                const allNodes = $getSelection().getNodes()
+                allNodes.forEach(node => {
+                    node.getParents().forEach(parent => {
+                       if( parent.getType()==="list"){
+                        shouldBanner = false
+                       }
+                    })
+                })
+
+                shouldBanner&&editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined)
+                !shouldBanner&&console.log("cannot banner the list")
+            })
+
+        }}>Banner</button>
     )
 }

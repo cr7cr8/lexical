@@ -2,7 +2,7 @@ import {
     ParagraphNode, ElementNode,
     createCommand, COMMAND_PRIORITY_NORMAL, $insertNodes, $createParagraphNode, DecoratorNode,
     TextNode, $getNodeByKey, $getSelection, $isRangeSelection, $setSelection, RangeSelection, $createRangeSelection,
-    BLUR_COMMAND, FOCUS_COMMAND, COMMAND_PRIORITY_LOW
+    BLUR_COMMAND, FOCUS_COMMAND, COMMAND_PRIORITY_LOW, LineBreakNode
 
 } from "lexical";
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -15,7 +15,7 @@ import { LinkNode, $createLinkNode, AutoLinkNode } from "@lexical/link"
 
 import { SepNode, INSERT_SEP_COMMAN, SepNodePlugin } from "./SepNode"
 
-import { $setBlocksType, $patchStyleText, $cloneWithProperties, $sliceSelectedTextNodeContent, $wrapNodes, $addNodeStyle } from '@lexical/selection'
+import { $setBlocksType, $patchStyleText, $cloneWithProperties, $sliceSelectedTextNodeContent, $wrapNodes, $addNodeStyle, $isAtNodeEnd } from '@lexical/selection'
 
 export const INSERT_LINK_COMMAND = createCommand("insertLink")
 export const REMOVE_LINK_COMMAND = createCommand("removeLink")
@@ -401,6 +401,68 @@ export function LinkCommandPlugin() {
     }, [editor])
 
 
+    useEffect(() => {
+
+        return editor.registerNodeTransform(LinkNode, (linkNode) => {
+
+            linkNode.getChildren().forEach(node => {
+
+
+                if (node.getType() === "linebreak") {
+                    const selection = $getSelection()
+                    if ($isAtNodeEnd(selection.focus)) {
+                        console.log("cannot insert linebreak at the end of a linknode")
+                        node.remove()
+
+                        const linebreakNode = new LineBreakNode()
+
+                        linkNode.insertAfter(linebreakNode)
+
+                        const newSelection = $createRangeSelection();
+                        newSelection.anchor.set(linebreakNode.getParent().getKey(), linebreakNode.getPreviousSiblings().length + 1, "element")
+                        newSelection.focus.set(linebreakNode.getParent().getKey(), linebreakNode.getPreviousSiblings().length + 1, "element")
+                        newSelection.format = selection.format
+                        //console.log(linebreakNode.getPreviousSiblings().length)
+                        $setSelection(newSelection)
+                    }
+                    else {
+
+                    }
+
+                }
+
+            })
+
+            if (linkNode.getChildrenSize() === 0) {
+                linkNode.remove()
+            }
+
+
+
+        })
+
+    }, [editor])
+
+
+    useEffect(() => {
+
+        return editor.registerUpdateListener(() => {
+
+            editor.getEditorState().read(() => {
+                const selection = $getSelection()
+
+
+                selection && console.log($isAtNodeEnd(selection.focus), selection)
+
+            })
+
+
+        })
+
+    }, [editor])
+
+
+
     return (
         <>
             {/* <button onClick={function (e) {
@@ -441,6 +503,18 @@ export function LinkButton() {
 
         })
     }
+    // useEffect(()=>{
+
+    //     return editor.registerMutationListener(LinkNode,(a)=>{
+
+    //     console.log(a)
+
+
+    //     })
+
+    // },[editor])
+
+
 
 
 

@@ -95,6 +95,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
 
                 textNode.setTextContent(part1 + "" + part2)
                 textNode.splitText(part1.length)//.map(n => n.toggleUnmergeable())
+                console.log(textNode.exportJSON())
 
                 const newSelection = $createRangeSelection();
                 newSelection.anchor.set(textNode.getKey(), part1.length, "text")
@@ -102,9 +103,10 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                 newSelection.format = selection.format
                 $setSelection(newSelection)
 
+                const mentionNode = new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)
+                newSelection.insertNodes([mentionNode])
 
-                newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
-
+                console.log(mentionNode.exportJSON())
                 // if (!part1 && !part2) { textNode.insertBefore(new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)) }
                 // else {
                 //   newSelection.insertNodes([new MentionNode(matchUsers[tabNum % matchUsers.length], tabNum, undefined)])
@@ -154,7 +156,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                     const focusOffset = selection.focus.offset
 
                     const word = getWordAt(text, focusOffset - 1)
-                    console.log("pos word is", word)
+                   // console.log("pos word is", word)
                     if (word && String(word).charAt(0) === "@") {
                         setX(window.getSelection().getRangeAt(0).getBoundingClientRect().x)
                         setY(window.getSelection().getRangeAt(0).getBoundingClientRect().y)

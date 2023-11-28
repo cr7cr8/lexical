@@ -10,22 +10,36 @@ import { LinkNode, $createLinkNode, AutoLinkNode } from "@lexical/link"
 
 export class MentionNode extends DecoratorNode {
 
-    constructor(name,value,key) {
+    constructor(name, value, key) {
         super(key)
-        
+
         this.nodeName = name
         this.nodeValue = value
-     
+
     }
     static importJSON(...args) {
-        return super.importJSON(...args)
+     //   console.log(args)
+        const { type, nodeName, nodeValue } = args[0]
+        return new MentionNode(nodeName, nodeValue)
     }
 
+    // getParent() {
+    //     return super.getParent()
+    // }
+
     exportJSON() {
+
         return {
-            ...super.exportJSON(),
+            //   ...super.exportJSON(), // this one is not extended
+            type: "MentionNode",
+            nodeName: this.nodeName,
+            nodeValue: this.nodeValue,
+
+            // backgroundColor: this.getBackgroundColor(),
+            version: 2.5,
 
         };
+
     }
     setNodeValue(value) {
         const self = this.getWritable();
@@ -33,6 +47,23 @@ export class MentionNode extends DecoratorNode {
     }
     getNodeValue() {
         return this.nodeValue
+    }
+
+    createDOM(config) {
+
+        const element = document.createElement("span")
+        addClassNamesToElement(element, config.theme.mantionNode)
+        //    element.className = config.theme.banner || ""
+        //    element.style.backgroundColor = "lightgreen"
+        //    element.appendChild(document.createElement("hr"))
+        //    element.append("test-")
+        return element;
+
+    }
+    decorate(...args) {
+        //  console.log(args)
+        return <ReactNode {...args} node={this} />
+        //return <MyComponent {...args} node={this} />
     }
 
     exportDOM(...args) {
@@ -53,6 +84,7 @@ export class MentionNode extends DecoratorNode {
                 el.setAttribute("data-type", this.getType())
                 // el.append("this is a react node")
                 generatedElement.appendChild(el)
+
                 // console.log(generatedElement)
 
                 return generatedElement
@@ -69,7 +101,7 @@ export class MentionNode extends DecoratorNode {
     }
 
     static clone(node) {
-        return new MentionNode(node.nodeName,node.nodeValue,node.__key);
+        return new MentionNode(node.nodeName, node.nodeValue, node.__key);
     }
     isInline() {
         return true
@@ -77,6 +109,8 @@ export class MentionNode extends DecoratorNode {
     isIsolated() {
         return true
     }
+
+    
 
     updateDOM() {
         return false
@@ -99,23 +133,9 @@ export class MentionNode extends DecoratorNode {
         return true
     }
 
-    createDOM(config) {
-
-        const element = document.createElement("span")
-
-        element.className = config.theme.banner || ""
-        element.style.backgroundColor = "lightgreen"
-        // element.appendChild(document.createElement("hr"))
-        return element;
-
-    }
 
 
-    decorate(...args) {
-        //  console.log(args)
-        return <ReactNode {...args} node={this} />
-        //return <MyComponent {...args} node={this} />
-    }
+
 
 
 
@@ -126,7 +146,7 @@ export class MentionNode extends DecoratorNode {
 function ReactNode(props) {
 
 
-   // const [state, setState] = useState(1)
+    // const [state, setState] = useState(1)
     const [editor] = useLexicalComposerContext()
 
 
@@ -135,7 +155,10 @@ function ReactNode(props) {
 
 
 
-    return <button style={{ backgroundColor: "orange", borderWidth: 0,userSelect:"none" }}
+    return <button style={{
+        backgroundColor: "orange", borderWidth: 0,
+        userSelect: "none"
+    }}
         // onKeyDown={function () {
         //     setState(pre => pre + 1)
 
@@ -145,21 +168,21 @@ function ReactNode(props) {
         //     })
         // }}
         onClick={function () {
-    
-          //  setState(pre => pre + 1)
+
+            //  setState(pre => pre + 1)
 
             editor.update(() => {
 
                 props.node.setNodeValue(props.node.getNodeValue() + 1)
-                
+
             })
 
             // editor.getEditorState().read(() => { })
             // alert($generateHtmlFromNodes(editor, null))
         }}
-        // onChange={function (e) {
-        //     setText(e.target.value)
-        // }}
+    // onChange={function (e) {
+    //     setText(e.target.value)
+    // }}
 
     >{props.node.nodeName} {props.node.getNodeValue()}</button>
 }
