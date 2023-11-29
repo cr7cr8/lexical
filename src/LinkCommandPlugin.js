@@ -452,7 +452,7 @@ export function LinkCommandPlugin() {
                 const selection = $getSelection()
 
 
-                selection && console.log($isAtNodeEnd(selection.focus), selection)
+           //     selection && console.log($isAtNodeEnd(selection.focus), selection)
 
             })
 

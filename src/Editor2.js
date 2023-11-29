@@ -47,7 +47,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { addClassNamesToElement } from "@lexical/utils"
 import { $generateHtmlFromNodes } from '@lexical/html';
-import parse from 'html-react-parser';
+import parse, { domToReact } from 'html-react-parser';
 
 
 import TreeViewPlugin from "./TreeViewPlugin";
@@ -129,6 +129,8 @@ export function validateUrl(url) {
 
 export function Editor2() {
 
+  const [html, setHtml] = useState("")
+
   return (
     <>
 
@@ -137,7 +139,16 @@ export function Editor2() {
           initialConfig={{
             namespace: 'MyEditor',
             onError: (err) => console.error(err),
-            nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode],
+            nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode,
+
+              // {
+              //     replace: ParagraphNode,
+              //     with: (node) => {
+              //         return new BannerNode();
+              //     }
+              // }
+
+            ],
             theme: {
 
               text: {
@@ -251,7 +262,11 @@ export function Editor2() {
             const keys = editor.getEditorState().read(
 
               () => {
-               // console.log(JSON.stringify(editor.getEditorState().toJSON()))
+
+
+                setHtml($generateHtmlFromNodes(editor));
+
+                // console.log(JSON.stringify(editor.getEditorState().toJSON()))
               }
 
             );
@@ -292,15 +307,66 @@ export function Editor2() {
 
 
         </LexicalComposer>
-        {/* {parse(html)} */}
+        {parse(html, {
 
-      </div>
+          replace({ attribs, children, name, ...args }) {
+            // console.log(name)
+            if (attribs && Object.keys(attribs).includes("data-type")) {
+              if (attribs["data-type"] === "MentionNode") {
+
+                return (
+                  <button style={{ backgroundColor: "orange", borderWidth: 0, userSelect: "none" }}>
+                    {attribs["data-name"]} {attribs["data-increment"]}
+                  </button>
+                )
+
+                //if want keep the comming Tag, do the following
+                //const CustomTag = name;
+                // return (
+
+                //   <CustomTag {...attribs}>
+                //     <button style={{ backgroundColor: "orange", borderWidth: 0, userSelect: "none" }}>
+                //       {attribs["data-name"]} {attribs["data-increment"]}
+                //     </button>
+                //     {domToReact(children, options)}
+                //   </CustomTag>
+
+                // )
+              }
+            }
+
+
+            return
+          },
+
+
+        })}
+
+      </div >
     </>
   )
 }
 
 
+const options = {
+  replace({ attribs, children }) {
+    if (!attribs) {
+      return;
+    }
 
+    if (attribs.id === 'main') {
+      return <h1 style={{ fontSize: 42 }}>{domToReact(children, options)}</h1>;
+    }
+
+    if (attribs.class === 'prettify') {
+      return (
+        <span style={{ color: 'hotpink' }}>
+          {domToReact(children, options)}
+        </span>
+      );
+    }
+  },
+};
 
 
 

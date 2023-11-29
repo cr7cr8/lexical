@@ -18,7 +18,7 @@ export class MentionNode extends DecoratorNode {
 
     }
     static importJSON(...args) {
-     //   console.log(args)
+        //   console.log(args)
         const { type, nodeName, nodeValue } = args[0]
         return new MentionNode(nodeName, nodeValue)
     }
@@ -110,7 +110,7 @@ export class MentionNode extends DecoratorNode {
         return true
     }
 
-    
+
 
     updateDOM() {
         return false
@@ -143,11 +143,11 @@ export class MentionNode extends DecoratorNode {
 
 
 
-function ReactNode(props) {
+ function ReactNode(props) {
 
 
     // const [state, setState] = useState(1)
-    const [editor] = useLexicalComposerContext()
+    const [editor] = useLexicalComposerContext() || [null]
 
 
 
@@ -171,7 +171,7 @@ function ReactNode(props) {
 
             //  setState(pre => pre + 1)
 
-            editor.update(() => {
+            editor && editor.update(() => {
 
                 props.node.setNodeValue(props.node.getNodeValue() + 1)
 

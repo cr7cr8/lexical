@@ -1,4 +1,3 @@
-import toStyleString from 'to-style/src/toStyleString';
 import { computePosition, flip, shift } from '@floating-ui/dom';
 import { useEffect, useState, useMemo, useLayoutEffect, forwardRef, useRef } from 'react';
 import {
@@ -66,12 +65,11 @@ import { SepNode } from './SepNode';
 
 
 
-//export class BannerNode extends ParagraphNode {
 export class BannerNode extends ElementNode {
 
     constructor(...args) {
         super(...args)
-        //console.log(this)
+
     }
 
     static clone(node) {
@@ -111,25 +109,29 @@ export class BannerNode extends ElementNode {
         */
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
-        console.log("updateDom", prevNode, this, dom)
+        console.log("updateDom", prevNode.__indent, this.__indent, dom)
 
         return true;
     }
 
     exportDOM(...args) {
-       
+        // console.log(super.exportDOM(...args).elem)
+        // return  super.exportDOM(...args)
+        // return document.createElement("span").append("abcd")
+        console.log("exportDom", args)
         return {
             element: super.exportDOM(...args).element,
             after: function (generatedElement) {
 
-                
-                const styleObj = {
-                    ...this.__format && { textAlign: ["left", "center", "right", "justify"][this.__format - 1] },
-                    ...this.__indent && { paddingInlineStart: `calc(${this.__indent * 40}px)` },
+                console.log("xxx", args[0]._config.theme.bannerGraph)
+
+                if (this.__indent) {
+                    generatedElement.style = `padding-inline-start: calc(${this.__indent * 40}px);`
                 }
-           
-                generatedElement.style = toStyleString(styleObj)
-               
+
+                //   generatedElement.classList.add(args[0]._config.theme.bannerGraph);
+                //   generatedElement.className = args[0]._config.theme.bannerGraph
+                //generatedElement.style = `color:red`
 
 
             }
@@ -139,7 +141,7 @@ export class BannerNode extends ElementNode {
     createDOM(config, editor) {
 
         //console.log(config)
-        // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
+        //super.createDOM(config,editor)//  --> works if extends paragraphnode
         const element = document.createElement("div")
         //element.className = config.theme.paragraph
         addClassNamesToElement(element, config.theme.bannerGraph)
