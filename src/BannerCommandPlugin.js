@@ -1,4 +1,5 @@
 import toStyleString from 'to-style/src/toStyleString';
+import toStyle from 'to-style';
 import { computePosition, flip, shift } from '@floating-ui/dom';
 import { useEffect, useState, useMemo, useLayoutEffect, forwardRef, useRef } from 'react';
 import {
@@ -69,13 +70,26 @@ import { SepNode } from './SepNode';
 //export class BannerNode extends ParagraphNode {
 export class BannerNode extends ElementNode {
 
-    constructor(...args) {
-        super(...args)
-        //console.log(this)
+    constructor(bgColor) {
+        super()
+        this.bgColor = bgColor
+
     }
 
+    setBgColor(value) {
+        const self = this.getWritable();
+        self.bgColor = value;
+    }
+
+    isInline() {
+        return false
+    }
+
+
     static clone(node) {
-        return new BannerNode(node.__key);
+        return new BannerNode(node.bgColor);
+
+
     }
 
     static getType() {
@@ -83,9 +97,14 @@ export class BannerNode extends ElementNode {
     }
 
     static importJSON(...args) {
+        const { bgColor, indent, format } = args[0]
 
-        return new BannerNode()
+        const banner = new BannerNode(bgColor)
+        banner.setIndent(indent)
+        banner.setFormat(format)
+        console.log(args[0])
 
+        return banner
     }
 
     exportJSON() {
@@ -95,6 +114,8 @@ export class BannerNode extends ElementNode {
         return {
             ...super.exportJSON(),
             type: "banner",
+            bgColor: this.bgColor,
+        
             //    version: 1,
             //   children: [],
             //customValue: "anything you like",
@@ -111,25 +132,26 @@ export class BannerNode extends ElementNode {
         */
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
-        console.log("updateDom", prevNode, this, dom)
+        // console.log("updateDom", prevNode, this, dom)
 
         return true;
     }
 
     exportDOM(...args) {
-       
+
         return {
             element: super.exportDOM(...args).element,
             after: function (generatedElement) {
 
-                
+
                 const styleObj = {
                     ...this.__format && { textAlign: ["left", "center", "right", "justify"][this.__format - 1] },
                     ...this.__indent && { paddingInlineStart: `calc(${this.__indent * 40}px)` },
+                    ...this.bgColor && { backgroundColor: this.bgColor }
                 }
-           
+
                 generatedElement.style = toStyleString(styleObj)
-               
+
 
 
             }
@@ -144,6 +166,9 @@ export class BannerNode extends ElementNode {
         //element.className = config.theme.paragraph
         addClassNamesToElement(element, config.theme.bannerGraph)
         // element.style = "background: skyblue"
+        if (this.bgColor) {
+            element.style.backgroundColor = this.bgColor
+        }
         return element;
     }
 
@@ -272,6 +297,7 @@ export const $createBannerNode = () => {
 }
 
 export const INSERT_BANNER_COMMAND = createCommand("INSERT_BANNER_COMMAND")
+export const CHANGE_BANNER_COLOR_COMMAND = createCommand("CHANGE_BANNER_COLOR_COMMAND")
 export function BannerCommandPlugin() {
 
     const [editor] = useLexicalComposerContext()
@@ -319,6 +345,40 @@ export function BannerCommandPlugin() {
 
     }, [editor])
 
+    useEffect(() => {
+
+        return editor.registerCommand(
+            CHANGE_BANNER_COLOR_COMMAND,
+            (color) => {
+
+
+
+                const selection = $getSelection();
+
+                const allNodes = selection.getNodes()
+                //   console.log(allNodes)
+
+                let node = allNodes[0]
+
+
+                while ((node.getType() !== "banner") && (node.getType() !== "root")) {
+                    node = node.getParent()
+                }
+                //console.log(node)
+                if (node.getType() == "banner") {
+                    node.setBgColor(color)
+                }
+
+
+                return true;
+            },
+
+            COMMAND_PRIORITY_NORMAL,
+        );
+
+
+
+    }, [editor])
 
 
 
@@ -347,11 +407,27 @@ export function BannerButton() {
                         }
                     })
                 })
-                editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined)
+                // editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined)
                 shouldBanner && editor.dispatchCommand(INSERT_BANNER_COMMAND, undefined)
                 !shouldBanner && console.log("cannot banner the list")
             })
 
         }}>Banner</button>
+    )
+}
+
+export function BannerColorButton() {
+
+    const [editor] = useLexicalComposerContext()
+
+    return (
+        <button onClick={() => {
+
+            editor.getEditorState().read(() => {
+                editor.dispatchCommand(CHANGE_BANNER_COLOR_COMMAND, "#" + Math.floor(Math.random() * 16777215).toString(16))
+
+            })
+
+        }}>BannerColour</button>
     )
 }

@@ -62,7 +62,7 @@ import { MentionNode } from './MentionNode';
 import { SepNode } from './SepNode';
 
 
-import { BannerNode, BannerCommandPlugin, BannerButton } from './BannerCommandPlugin';
+import { BannerNode, BannerCommandPlugin, BannerButton,BannerColorButton } from './BannerCommandPlugin';
 
 
 
@@ -299,6 +299,7 @@ export function Editor2() {
           <div><b>Banner</b></div>
           <BannerCommandPlugin />
           <BannerButton />
+          <BannerColorButton />
           <div><b>Tree</b></div>
           <TreeViewPlugin />
 
