@@ -95,9 +95,12 @@ export function SepNodePlugin({ node, ...props }) {
         )
 
         const remove2 = editor.registerMutationListener(SepNode, function (mutatedNodes) {
+
+
             for (let [nodeKey, mutation] of mutatedNodes) {
-                //console.log(nodeKey, mutation)
+                console.log(nodeKey, mutation)
                 editor.update(function () {
+                    console.log(nodeKey)
                     const sepNode = $getNodeByKey(nodeKey)
                     if (sepNode?.getPreviousSibling()?.getType() === "SepNode") {
                         sepNode?.getPreviousSibling()?.remove()
@@ -109,10 +112,30 @@ export function SepNodePlugin({ node, ...props }) {
             }
         })
 
+        // const remove3 = editor.registerNodeTransform(SepNode, function (mutatedNodes) {
+        //     for (let [nodeKey, mutation] of mutatedNodes) {
+        //         console.log(nodeKey, mutation)
+        //         editor.update(function () {
+        //             console.log(nodeKey)
+        //             const sepNode = $getNodeByKey(nodeKey)
+        //             if (sepNode?.getPreviousSibling()?.getType() === "SepNode") {
+        //                 sepNode?.getPreviousSibling()?.remove()
+        //             }
+
+        //         })
+ 
+
+        //     }
+        // })
+
+    
+
+
 
         return function () {
             remove1()
             remove2()
+        //    remove3()
         }
 
 

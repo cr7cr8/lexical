@@ -59,7 +59,7 @@ import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugi
 
 import { MentionPlugin } from "./MentionPlugin"
 import { MentionNode } from './MentionNode';
-import { SepNode } from './SepNode';
+import { SepNode,SepNodePlugin } from './SepNode';
 
 
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
@@ -190,12 +190,12 @@ export function Editor2() {
 
             },
 
-       //      editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
-      //     "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+            //      editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
+            //     "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
 
-               editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            //        editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
             //    editorState:`{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"banner","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
-         //   editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            //   editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
             // editorState: function (editor) {
             //   const root = $getRoot();
             //   if (root.getFirstChild() === null) {
@@ -220,7 +220,7 @@ export function Editor2() {
 
             //   }
             // }
-
+            editorState: `{"root":{"children":[{"children":[{"type":"SepNode"}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
           }}>
           <RichTextPlugin
             contentEditable={<ContentEditable
@@ -247,6 +247,7 @@ export function Editor2() {
             }}
 
           />
+          <SepNodePlugin />
           {/* <BeautifulMentionsPlugin menuComponent={CustomMenu} menuItemComponent={CustomMenuItem} triggers={["@", "#"]}
             //items={mentionItems}
             onSearch={function (tag) {
@@ -266,7 +267,7 @@ export function Editor2() {
 
                 setHtml($generateHtmlFromNodes(editor));
 
-                // console.log(JSON.stringify(editor.getEditorState().toJSON()))
+             //   console.log(JSON.stringify(editor.getEditorState().toJSON()))
               }
 
             );
