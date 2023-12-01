@@ -62,8 +62,8 @@ import { MentionNode } from './MentionNode';
 import { SepNode } from './SepNode';
 
 
-import { BannerNode, BannerCommandPlugin, BannerButton,BannerColorButton } from './BannerCommandPlugin';
-
+import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
+import { ImageNode, ImageCommandPlugin, ImageButton } from './ImageCommandPlugin';
 
 
 const URL_MATCHER = /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
@@ -139,7 +139,7 @@ export function Editor2() {
           initialConfig={{
             namespace: 'MyEditor',
             onError: (err) => console.error(err),
-            nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode,
+            nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
 
               // {
               //     replace: ParagraphNode,
@@ -190,12 +190,12 @@ export function Editor2() {
 
             },
 
-            // editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
-            // "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+       //      editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
+      //     "direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
 
-            //   editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+               editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
             //    editorState:`{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"banner","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
-            editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+         //   editorState: `{"root":{"children":[{"children":[{"type":"MentionNode","nodeName":"atuny0","nodeValue":10000,"version":2.5}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
             // editorState: function (editor) {
             //   const root = $getRoot();
             //   if (root.getFirstChild() === null) {
@@ -300,6 +300,9 @@ export function Editor2() {
           <BannerCommandPlugin />
           <BannerButton />
           <BannerColorButton />
+          <div><b>Image</b></div>
+          <ImageCommandPlugin />
+          <ImageButton />
           <div><b>Tree</b></div>
           <TreeViewPlugin />
 
@@ -333,6 +336,22 @@ export function Editor2() {
                 //   </CustomTag>
 
                 // )
+              }
+              else if (attribs["data-type"] === "ImageNode") {
+
+                return (
+                  <img style={{
+                    backgroundColor: "lightblue", objectFit: "contain",
+                    objectFit: "contain", background: "lightblue", width: "auto", height: "auto", maxHeight: 200, maxWidth: 200
+                  }}
+
+                    src={attribs["data-url"]}
+                  //    width={attribs["data-width"]}
+                  //    height={attribs["data-height"]} 
+                  />
+
+
+                )
               }
             }
 

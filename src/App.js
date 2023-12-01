@@ -20,6 +20,8 @@ function App() {
       {/* <MyComponent      /> */}
 
 
+      {/* <img src={"https://picsum.photos/400/500"} width={300} height={200} style={{objectFit:"contain",background:"lightblue"}} alt="BigCo Inc. logo"/> */}
+     
 
     </div>
   );
