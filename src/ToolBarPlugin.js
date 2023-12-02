@@ -154,20 +154,24 @@ export function FormatButton() {
             ['Bold', 'Italic', 'Underline', 'Code', 'Highlight', 'Strikethrough', 'Subscript', 'Superscript']
                 .map((value, index) => <button key={index} onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, value.toLowerCase())
-                    
-                    editor.update(() => {
-                        const selection = $getSelection() 
-                        $getSelection().getNodes().shift()?.insertBefore(new SepNode())
-                        $getSelection().getNodes().pop()?.insertAfter(new SepNode())
-                       
 
-                        const newSelection = $createRangeSelection();
-                        newSelection.anchor.set(selection.focus.key, selection.focus.offset, "text")
-                        newSelection.focus.set(selection.focus.key, selection.focus.offset, "text")
-                        newSelection.format = selection.format
-                        $setSelection(newSelection)
 
-                    })
+                
+
+
+                    // editor.update(() => {
+                    //     const selection = $getSelection() 
+                    //     $getSelection().getNodes().shift()?.insertBefore(new SepNode())
+                    //     $getSelection().getNodes().pop()?.insertAfter(new SepNode())
+
+
+                    //     const newSelection = $createRangeSelection();
+                    //     newSelection.anchor.set(selection.focus.key, selection.focus.offset, "text")
+                    //     newSelection.focus.set(selection.focus.key, selection.focus.offset, "text")
+                    //     newSelection.format = selection.format
+                    //     $setSelection(newSelection)
+
+                    // })
 
 
 
@@ -303,7 +307,6 @@ export function LinkButton() {
     )
 
 }
-
 
 
 

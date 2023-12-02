@@ -59,7 +59,7 @@ import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugi
 
 import { MentionPlugin } from "./MentionPlugin"
 import { MentionNode } from './MentionNode';
-import { SepNode,SepNodePlugin } from './SepNode';
+import { SepNode, SepNodePlugin, TextNode2 } from './SepNode';
 
 
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
@@ -140,6 +140,18 @@ export function Editor2() {
             namespace: 'MyEditor',
             onError: (err) => console.error(err),
             nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
+              TextNode2,
+
+            //   {
+            //     replace: TextNode,
+            //     with: (node) => {
+            //       console.log(node)
+            //       const textNode2 = new TextNode2(node.__text)
+            //       textNode2.setFormat(0)
+            //       return textNode2
+            //     }
+            //   }
+
 
               // {
               //     replace: ParagraphNode,
@@ -220,7 +232,7 @@ export function Editor2() {
 
             //   }
             // }
-            editorState: `{"root":{"children":[{"children":[{"type":"SepNode"}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
+            // editorState: `{"root":{"children":[{"children":[{"type":"SepNode"}],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`,
           }}>
           <RichTextPlugin
             contentEditable={<ContentEditable
@@ -267,7 +279,7 @@ export function Editor2() {
 
                 setHtml($generateHtmlFromNodes(editor));
 
-             //   console.log(JSON.stringify(editor.getEditorState().toJSON()))
+                //   console.log(JSON.stringify(editor.getEditorState().toJSON()))
               }
 
             );

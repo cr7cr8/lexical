@@ -50,7 +50,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { addClassNamesToElement } from "@lexical/utils"
 import { $generateHtmlFromNodes } from '@lexical/html';
-import parse from 'html-react-parser';
+//import parse from 'html-react-parser';
 
 
 import TreeViewPlugin from "./TreeViewPlugin";
@@ -115,7 +115,7 @@ export class BannerNode extends ElementNode {
             ...super.exportJSON(),
             type: "banner",
             bgColor: this.bgColor,
-        
+
             //    version: 1,
             //   children: [],
             //customValue: "anything you like",
@@ -158,9 +158,28 @@ export class BannerNode extends ElementNode {
         }
     }
 
+    // createDOM(config, editor) {
+
+
+    //     // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
+    //     const element = document.createElement("div")
+    //     const div1 = document.createElement("div")
+    //     const div2 = document.createElement("div2")
+    //     div1.innerText = "hidiv1"
+    //     div2.innerText = "hidiv2"
+    //     element.appendChild(div1)
+    //    // element.appendChild(div2)
+    //     addClassNamesToElement(element, config.theme.bannerGraph)
+    //     // element.style = "background: skyblue"
+    //     if (this.bgColor) {
+    //         element.style.backgroundColor = this.bgColor
+    //     }
+    //     return element;
+    // }
+
     createDOM(config, editor) {
 
-        //console.log(config)
+        //   element cannot have siblings
         // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
         const element = document.createElement("div")
         //element.className = config.theme.paragraph

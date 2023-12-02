@@ -30,6 +30,8 @@ export class ImageNode extends DecoratorNode {
         this.height = height || 200
 
     }
+
+
     static importJSON(...args) {
         //   console.log(args)
         const { type, url, width, height } = args[0]
@@ -80,6 +82,9 @@ export class ImageNode extends DecoratorNode {
         return "ImageNode"
     }
     updateDOM(prevNode, dom, config) {
+
+
+
         return true
         // console.log(prevNode.getUrl(), this.getUrl())
         // if (prevNode.getUrl() !== this.getUrl()) { console.log("xxx-url"); return true }
@@ -161,6 +166,11 @@ function ReactImageNode(props) {
 
     const inputRef = useRef()
 
+    // useEffect(() => {
+
+    //     console.log(new Date())
+
+    // }, [])
 
     // useEffect(() => {
 
@@ -179,7 +189,7 @@ function ReactImageNode(props) {
                 onChange={e => {
                     const imageUrl = URL.createObjectURL(e.currentTarget.files[0])
 
-                  
+
 
                     setImageUrl(imageUrl)
                     editor.update(() => {
@@ -188,24 +198,82 @@ function ReactImageNode(props) {
 
 
                 }}
+               
             />
-            <img src={imageUrl || props.node.url}
-   
-                style={{ objectFit: "contain", background: "lightblue",width:"auto",height:"auto",maxHeight:200,maxWidth:200 }}
-                alt="BigCo Inc. logo"
-                onClick={function () {
-                    inputRef.current.click()
-                }}
-                onLoad={function (e) {
 
-                     console.log(window.getComputedStyle(e.target).width, window.getComputedStyle(e.target).height)
+
+            {props.node.url === "/"
+                ? <button style={{  }}
+                    onClick={function (e) {
+                        e.preventDefault()
+                        inputRef.current.click()
+                      
+                        editor.update(() => {
+
+                            const imageNode = props.node
+                            const parentNode = imageNode.getParent()
+                            const siblingSize = imageNode.getPreviousSiblings().length
+
+                       
+
+                          
+                            const selection = $getSelection()
+                            const newSelection = $createRangeSelection();
+                            newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
+                            newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
+                           // newSelection.format = selection.getFormat()
+
+                            console.log(selection)
+
+                            $setSelection(newSelection)
+
+                 
+
+                        })
+                    }}
                   
-             
 
-                }}
+                >IMAGE</button>
+                : <img src={imageUrl || props.node.url}
 
-            />
+                    style={{ objectFit: "contain", background: "lightblue", width: "auto", height: "auto", maxHeight: 200, maxWidth: 200 }}
+                    alt="BigCo Inc. logo"
+                    onClick={function () {
+                        inputRef.current.click()
+                        editor.update(() => {
 
+                            // const imageNode = props.node
+                            // const parentNode = imageNode.getParent()
+                            // const siblingSize = imageNode.getPreviousSiblings().length
+
+                       
+
+                    
+                            // const selection = $getSelection()
+                            // const newSelection = $createRangeSelection();
+                            // newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
+                            // newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
+                            // newSelection.format = selection.format
+
+
+
+                            // $setSelection(newSelection)
+
+                         
+                        })
+                    }}
+
+
+                    onLoad={function (e) {
+                     //   console.log(window.getComputedStyle(e.target).width, window.getComputedStyle(e.target).height)
+
+
+                     
+
+                    }}
+
+                />
+            }
         </>
 
 
@@ -235,7 +303,26 @@ export function ImageCommandPlugin() {
         editor.registerCommand(INSERT_IMAGE, ({ url, width, height }) => {
 
             const selection = $getSelection();
-            selection.insertNodes([new ImageNode(url, width, height)])
+            const imageNode = new ImageNode(url, width, height)
+            const res = selection.insertNodes([imageNode, new TextNode("")], false)
+            console.log("image res", res, imageNode.__key)
+
+            // editor.update(() => {
+
+            //     console.log("xxx")
+            //     const newSelection = $createRangeSelection();
+            //     newSelection.anchor.set(imageNode.__key, 1, "element")
+            //     newSelection.focus.set(imageNode.__key, 1, "element")
+            //     //newSelection.format = selection.format
+            //     $setSelection(newSelection)
+
+            //     setTimeout(() => {
+
+            //         editor.focus()
+            //     }, 100);
+
+            // })
+
 
 
         }, COMMAND_PRIORITY_NORMAL)
@@ -256,12 +343,13 @@ export function ImageButton() {
         <button onClick={function (e) {
             e.preventDefault()
             e.stopPropagation()
-            editor.dispatchCommand(INSERT_IMAGE, { url: "https://picsum.photos/400/500", width: 200, height: 300 })
+            // editor.dispatchCommand(INSERT_IMAGE, { url: "https://picsum.photos/400/500", width: 200, height: 300 })
+            editor.dispatchCommand(INSERT_IMAGE, { url: "/", width: 200, height: 300 })
 
 
 
 
-        }}>ImageButton</button>
+        }}>Image</button>
     )
 
 }
