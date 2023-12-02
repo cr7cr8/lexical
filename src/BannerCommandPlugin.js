@@ -163,14 +163,18 @@ export class BannerNode extends ElementNode {
 
     //     // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
     //     const element = document.createElement("div")
+       
     //     const div1 = document.createElement("div")
     //     const div2 = document.createElement("div2")
     //     div1.innerText = "hidiv1"
     //     div2.innerText = "hidiv2"
     //     element.appendChild(div1)
-    //    // element.appendChild(div2)
+    //     element.appendChild(div2)
     //     addClassNamesToElement(element, config.theme.bannerGraph)
-    //     // element.style = "background: skyblue"
+    //     //element.style = "background: brown"
+    //     element.style.backgroundColor = "brown"
+    //     element.style.display="flex"
+
     //     if (this.bgColor) {
     //         element.style.backgroundColor = this.bgColor
     //     }

@@ -26,6 +26,8 @@ import { $setBlocksType, $patchStyleText } from '@lexical/selection'
 import { HeadingNode, $createHeadingNode } from '@lexical/rich-text'
 
 
+
+
 import { LinkNode, $createLinkNode, AutoLinkNode } from "@lexical/link"
 
 import {
@@ -39,7 +41,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { AutoLinkPlugin } from "@lexical/react/LexicalAutoLinkPlugin"
 
-import { ToolBarPlugin, FormatButton, AlignButton, HistoryButton, IndentButton, ListButton } from './ToolBarPlugin';
+import { ToolBarPlugin, FormatButton, AlignButton, HistoryButton, IndentButton, ListButton, TableButton } from './ToolBarPlugin';
 import { LinkCommandPlugin, LinkButton } from "./LinkCommandPlugin"
 import { HeadingCommandPlugin, HeadingButton } from './HeadingCommandPlugin';
 
@@ -65,6 +67,8 @@ import { SepNode, SepNodePlugin, TextNode2 } from './SepNode';
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
 import { ImageNode, ImageCommandPlugin, ImageButton } from './ImageCommandPlugin';
 
+import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
+import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 
 const URL_MATCHER = /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
@@ -140,17 +144,18 @@ export function Editor2() {
             namespace: 'MyEditor',
             onError: (err) => console.error(err),
             nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
-              TextNode2,
+              TableCellNode, TableNode, TableRowNode,
+              //    TextNode2,
 
-            //   {
-            //     replace: TextNode,
-            //     with: (node) => {
-            //       console.log(node)
-            //       const textNode2 = new TextNode2(node.__text)
-            //       textNode2.setFormat(0)
-            //       return textNode2
-            //     }
-            //   }
+              //   {
+              //     replace: TextNode,
+              //     with: (node) => {
+              //       console.log(node)
+              //       const textNode2 = new TextNode2(node.__text)
+              //       textNode2.setFormat(0)
+              //       return textNode2
+              //     }
+              //   }
 
 
               // {
@@ -199,7 +204,21 @@ export function Editor2() {
                 "@Focused": "mention",
                 "#": "mention3"
               },
-
+              table: "PlaygroundEditorTheme__table",
+              tableAddColumns: "PlaygroundEditorTheme__tableAddColumns",
+              tableAddRows: "PlaygroundEditorTheme__tableAddRows",
+              tableCell: "PlaygroundEditorTheme__tableCell",
+              tableCellActionButton: "PlaygroundEditorTheme__tableCellActionButton",
+              tableCellActionButtonContainer:
+                "PlaygroundEditorTheme__tableCellActionButtonContainer",
+              tableCellEditing: "PlaygroundEditorTheme__tableCellEditing",
+              tableCellHeader: "PlaygroundEditorTheme__tableCellHeader",
+              tableCellPrimarySelected: "PlaygroundEditorTheme__tableCellPrimarySelected",
+              tableCellResizer: "PlaygroundEditorTheme__tableCellResizer",
+              tableCellSelected: "PlaygroundEditorTheme__tableCellSelected",
+              tableCellSortedIndicator: "PlaygroundEditorTheme__tableCellSortedIndicator",
+              tableResizeRuler: "PlaygroundEditorTheme__tableCellResizeRuler",
+              tableSelected: "PlaygroundEditorTheme__tableSelected",
             },
 
             //      editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"hfhgfh","type":"text","version":1}],
@@ -244,6 +263,7 @@ export function Editor2() {
 
           <HistoryPlugin />
           {/* <LinkPlugin validateUrl={validateUrl} /> */}
+          
           <ListPlugin />
           <AutoLinkPlugin matchers={MATCHERS} />
           <MentionPlugin
@@ -316,6 +336,9 @@ export function Editor2() {
           <div><b>Image</b></div>
           <ImageCommandPlugin />
           <ImageButton />
+          <div><b>Table</b></div>
+          <TablePlugin />
+          <TableButton />
           <div><b>Tree</b></div>
           <TreeViewPlugin />
 

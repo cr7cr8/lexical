@@ -59,6 +59,11 @@ import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugi
 import { LinkCommandPlugin, INSERT_LINK_COMMAND, REMOVE_LINK_COMMAND } from "./LinkCommandPlugin"
 import { SepNode } from './SepNode';
 
+import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
+import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
+import { INSERT_TABLE_COMMAND } from "@lexical/table";
+import { InsertTableCommandPayload } from "@lexical/table";
+
 export function ToolBarPlugin({ buttons, ...props }) {
 
     const [editor] = useLexicalComposerContext()
@@ -156,7 +161,7 @@ export function FormatButton() {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, value.toLowerCase())
 
 
-                
+
 
 
                     // editor.update(() => {
@@ -308,7 +313,21 @@ export function LinkButton() {
 
 }
 
+export function TableButton() {
+    const [editor] = useLexicalComposerContext()
 
+    return (
+        <>
+            <button onClick={function (e) {
+
+
+                editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns: "2", rows: "3", includeHeaders: false });
+
+            }}>Table</button>
+        </>
+    )
+
+}
 
 
 
