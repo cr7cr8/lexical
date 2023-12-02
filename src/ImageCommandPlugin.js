@@ -37,9 +37,12 @@ export class ImageNode extends DecoratorNode {
         const { type, url, width, height } = args[0]
         return new ImageNode(url, width, height)
     }
+
+   
     exportJSON() {
 
         return {
+            type:"ImageNode",
             url: this.url,
             width: this.width,
             height: this.height,
@@ -47,6 +50,11 @@ export class ImageNode extends DecoratorNode {
         };
 
     }
+
+
+
+
+
 
     setUrl(value) {
         const self = this.getWritable();

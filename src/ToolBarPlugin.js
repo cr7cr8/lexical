@@ -321,7 +321,17 @@ export function TableButton() {
             <button onClick={function (e) {
 
 
-                editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns: "2", rows: "3", includeHeaders: false });
+                editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns: "4", rows: "3", includeHeaders: false });
+
+                editor.update(() => {
+                    const tableNode = new TableNode()
+                    const tableRow = new TableRowNode()
+                    const tableCell = new TableCellNode()
+                
+                })
+
+
+
 
             }}>Table</button>
         </>
