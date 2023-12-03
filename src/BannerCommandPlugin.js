@@ -162,17 +162,19 @@ export class BannerNode extends ElementNode {
 
 
     //     // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
-    //     const element = document.createElement("div")
+    //     const element = document.createElement("table")
        
-    //     const div1 = document.createElement("div")
-    //     const div2 = document.createElement("div2")
-    //     div1.innerText = "hidiv1"
-    //     div2.innerText = "hidiv2"
+    //     const div1 = document.createElement("tr")
+    //     div1.appendChild(document.createElement("td"))
+    //     console.log(div1)
+    //     //const div2 = document.createElement("td")
+    //     // div1.innerText = "hidiv1"
+    //     // div2.innerText = "hidiv2"
     //     element.appendChild(div1)
-    //     element.appendChild(div2)
+    //    // element.appendChild(div2)
     //     addClassNamesToElement(element, config.theme.bannerGraph)
     //     //element.style = "background: brown"
-    //     element.style.backgroundColor = "brown"
+    //   //  element.style.backgroundColor = "brown"
     //     element.style.display="flex"
 
     //     if (this.bgColor) {
@@ -346,6 +348,7 @@ export function BannerCommandPlugin() {
                     node = node.getParent()
                 }
                 //console.log(node)
+             
                 node.replace(new BannerNode(), true)
 
                 // console.log(allNodes[0].getFirstDescendant())

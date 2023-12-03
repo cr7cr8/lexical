@@ -65,6 +65,9 @@ import { SepNode, SepNodePlugin, TextNode2 } from './SepNode';
 
 
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
+
+import { BannerNode1,BannerNode2,BannerNode3, BannerCommandPlugin1, BannerButton1 } from './BannerCommandPlugin1';
+
 import { ImageNode, ImageCommandPlugin, ImageButton } from './ImageCommandPlugin';
 
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
@@ -145,6 +148,7 @@ export function Editor2() {
             onError: (err) => console.error(err),
             nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
               TableCellNode, TableNode, TableRowNode,
+              BannerNode1,BannerNode2,BannerNode3,
               //    TextNode2,
 
               //   {
@@ -331,7 +335,9 @@ export function Editor2() {
           <IndentButton />
           <div><b>Banner</b></div>
           <BannerCommandPlugin />
+          <BannerCommandPlugin1 />
           <BannerButton />
+          <BannerButton1 />
           <BannerColorButton />
           <div><b>Image</b></div>
           <ImageCommandPlugin />
