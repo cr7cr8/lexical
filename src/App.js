@@ -7,21 +7,48 @@ import ContentEditable from 'react-contenteditable'
 //import Editor3 from './Editor3';
 
 import React from "react"
+import { Resizable, ResizableBox } from 'react-resizable';
 
+
+function App_() {
+  const [width, setWidth] = React.useState(200);
+  const [height, setHeight] = React.useState(200);
+
+  return (
+    <ResizableBox
+      width={width}
+      height={height}
+      onResize={(event, { element, size }) => {
+        setWidth(size.width);
+        setHeight(size.height);
+      }}
+      handle={<div className="box" >aaa</div>}
+    // draggableOpts={{grid: [25, 25]}}
+    >
+      <img className="box" src="https://picsum.photos/200/300" style={{ backgroundColor: "pink", minWidth:width, minHeight:height,objectFit:"contain" }} />
+
+    </ResizableBox>
+  );
+}
+
+const MyHandle = React.forwardRef((props, ref) => {
+  const {handleAxis, ...restProps} = props;
+  return <div ref={ref} className={`foo handle-${handleAxis}`} {...restProps} />;
+});
 function App() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh",backgroundColor:"gray" }}  >
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh", backgroundColor: "gray" }}  >
 
 
       {/* <Editor/> */}
-      <div style={{marginTop:"50px"}}>
-      <Editor2 />
+      <div style={{ marginTop: "50px" }}>
+        <Editor2 />
       </div>
       {/* <MyComponent      /> */}
 
 
       {/* <img src={"https://picsum.photos/400/500"} width={300} height={200} style={{objectFit:"contain",background:"lightblue"}} alt="BigCo Inc. logo"/> */}
-     
+
 
     </div>
   );

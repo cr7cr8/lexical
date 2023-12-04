@@ -1,5 +1,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useEffect, useState, useRef } from "react";
+import { Resizable, ResizableBox } from 'react-resizable';
+
 
 import {
     $getRoot, $getSelection, $createParagraphNode, $createTextNode, $isRangeSelection, ParagraphNode, $setSelection, $isRootNode,
@@ -27,7 +29,7 @@ export class ImageNode extends DecoratorNode {
         super()
         this.url = url
         this.width = width || 100
-        this.height = height || 200
+        this.height = height || 100
 
     }
 
@@ -38,11 +40,11 @@ export class ImageNode extends DecoratorNode {
         return new ImageNode(url, width, height)
     }
 
-   
+
     exportJSON() {
 
         return {
-            type:"ImageNode",
+            type: "ImageNode",
             url: this.url,
             width: this.width,
             height: this.height,
@@ -130,8 +132,8 @@ export class ImageNode extends DecoratorNode {
                 //  return ReactNode
                 const el = document.createElement("span")
                 el.setAttribute("data-url", this.url)
-                el.setAttribute("data-width", this.width)
-                el.setAttribute("data-height", this.height)
+                el.setAttribute("data-width", this.width || 100)
+                el.setAttribute("data-height", this.height || 100)
                 el.setAttribute("data-type", this.getType())
                 // el.append("this is a react node")
                 generatedElement.appendChild(el)
@@ -188,7 +190,16 @@ function ReactImageNode(props) {
 
 
     // }, [imageUrl])
+    const [width, setWidth] = useState(props.node.width || 100);
+    const [height, setHeight] = useState(props.node.height || 100);
 
+
+    const [minW, setMinW] = useState(100)
+    const [minH, setMinH] = useState(100)
+
+
+    const [maxW, setMaxW] = useState(600)
+    const [maxH, setMaxH] = useState(600)
 
     return (
         <>
@@ -206,81 +217,148 @@ function ReactImageNode(props) {
 
 
                 }}
-               
+
             />
 
 
             {props.node.url === "/"
-                ? <button style={{  }}
+                ? <button style={{}}
                     onClick={function (e) {
                         e.preventDefault()
                         inputRef.current.click()
-                      
+
                         editor.update(() => {
 
                             const imageNode = props.node
                             const parentNode = imageNode.getParent()
                             const siblingSize = imageNode.getPreviousSiblings().length
 
-                       
 
-                          
+
+
                             const selection = $getSelection()
                             const newSelection = $createRangeSelection();
                             newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
                             newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
-                           // newSelection.format = selection.getFormat()
+                            // newSelection.format = selection.getFormat()
 
                             console.log(selection)
 
                             $setSelection(newSelection)
 
-                 
+
 
                         })
                     }}
-                  
+
 
                 >IMAGE</button>
-                : <img src={imageUrl || props.node.url}
 
-                    style={{ objectFit: "contain", background: "lightblue", width: "auto", height: "auto", maxHeight: 200, maxWidth: 200 }}
-                    alt="BigCo Inc. logo"
-                    onClick={function () {
-                        inputRef.current.click()
+                : <ResizableBox
+                    width={width}
+                    height={height}
+                    style={{ display: "inline-block", position: "relative", background: "brown" }}
+                    lockAspectRatio
+                    onResize={(event, { element, size }) => {
+                        console.log(size)
+
+
+
+                        setWidth(size.width);
+                        setHeight(size.height);
+                        // editor.update(() => {
+                        //     props.node.setWidth(size.width);
+                        //     props.node.setHeight(size.height);
+
+                        // })
+
+                    }}
+                    onResizeStop={(event, { element, size }) => {
                         editor.update(() => {
+                            props.node.setWidth(size.width);
+                            props.node.setHeight(size.height);
 
-                            // const imageNode = props.node
-                            // const parentNode = imageNode.getParent()
-                            // const siblingSize = imageNode.getPreviousSiblings().length
-
-                       
-
-                    
-                            // const selection = $getSelection()
-                            // const newSelection = $createRangeSelection();
-                            // newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
-                            // newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
-                            // newSelection.format = selection.format
-
-
-
-                            // $setSelection(newSelection)
-
-                         
                         })
                     }}
+                    minConstraints={[minW, minH]}
+                    maxConstraints={[maxW, maxH]}
+                    axis='x'
+                    ResizeHandleAxis="se"
+                    className='react-resizable'
+                    handle={<div className="react-resizable-handle" ></div>}
+                // draggableOpts={{grid: [25, 25]}}
+                >
+                    <img className="box" src={imageUrl || props.node.url} style={{ backgroundColor: "pink", maxWidth: width, maxHeight: height, objectFit: "contain" }}
+
+                        onClick={function () {
+                            inputRef.current.click()
+
+                        }}
+
+                        onLoad={function (e) {
+                            if (e.target.width <= e.target.height) {
+
+                                setMinW(100)
+                                setMinH(100 * e.target.height / e.target.width)
+
+                                setMaxW(600)
+                                setMaxH(600 * e.target.height / e.target.width)
+                            }
+                            else {
+
+                                setMinW(100 * e.target.width / e.target.height)
+                                setMinH(100)
+
+                                setMaxW(600)
+                                setMaxH(600 * (e.target.height / e.target.width))
+                            }
+                            setWidth(e.target.width)
+                            setHeight(e.target.height)
+
+                        }}
+
+                    />
+
+                </ResizableBox>
+                // : <img src={imageUrl || props.node.url}
+
+                //     style={{ objectFit: "contain", background: "lightblue", width: "auto", height: "auto", maxHeight: 200, maxWidth: 200 }}
+                //     alt="BigCo Inc. logo"
+                //     onClick={function () {
+                //         inputRef.current.click()
+                //         editor.update(() => {
+
+                //             // const imageNode = props.node
+                //             // const parentNode = imageNode.getParent()
+                //             // const siblingSize = imageNode.getPreviousSiblings().length
 
 
-                    onLoad={function (e) {
-                     //   console.log(window.getComputedStyle(e.target).width, window.getComputedStyle(e.target).height)
 
 
-                     
+                //             // const selection = $getSelection()
+                //             // const newSelection = $createRangeSelection();
+                //             // newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
+                //             // newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
+                //             // newSelection.format = selection.format
 
-                    }}
 
-                />
+
+                //             // $setSelection(newSelection)
+
+
+                //         })
+                //     }}
+
+
+                //     onLoad={function (e) {
+                //         //   console.log(window.getComputedStyle(e.target).width, window.getComputedStyle(e.target).height)
+
+
+
+
+                //     }}
+
+                // />
             }
         </>
 
@@ -335,7 +413,13 @@ export function ImageCommandPlugin() {
 
         }, COMMAND_PRIORITY_NORMAL)
 
+
+
+
+
+
     }, [editor])
+
 
 
     return (

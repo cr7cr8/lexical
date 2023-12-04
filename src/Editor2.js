@@ -66,7 +66,7 @@ import { SepNode, SepNodePlugin, TextNode2 } from './SepNode';
 
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
 
-import { BannerNode1,BannerNode2,BannerNode3, BannerCommandPlugin1, BannerButton1 } from './BannerCommandPlugin1';
+import { BannerNode1, BannerNode2, BannerNode3, BannerCommandPlugin1, BannerButton1 } from './BannerCommandPlugin1';
 
 import { ImageNode, ImageCommandPlugin, ImageButton } from './ImageCommandPlugin';
 
@@ -148,7 +148,7 @@ export function Editor2() {
             onError: (err) => console.error(err),
             nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
               TableCellNode, TableNode, TableRowNode,
-              BannerNode1,BannerNode2,BannerNode3,
+              BannerNode1, BannerNode2, BannerNode3,
               //    TextNode2,
 
               //   {
@@ -267,7 +267,7 @@ export function Editor2() {
 
           <HistoryPlugin />
           {/* <LinkPlugin validateUrl={validateUrl} /> */}
-          
+
           <ListPlugin />
           <AutoLinkPlugin matchers={MATCHERS} />
           <MentionPlugin
@@ -381,10 +381,15 @@ export function Editor2() {
               }
               else if (attribs["data-type"] === "ImageNode") {
 
+                console.log(attribs["data-width"], attribs["data-height"],)
+
                 return (
                   <img style={{
                     backgroundColor: "lightblue", objectFit: "contain",
-                    objectFit: "contain", background: "lightblue", width: "auto", height: "auto", maxHeight: 200, maxWidth: 200
+                    objectFit: "contain", background: "lightblue",
+
+                    maxWidth: attribs["data-width"] + "px",// 200,
+                    maxHeight: attribs["data-height"] + "px",//200, 
                   }}
 
                     src={attribs["data-url"]}

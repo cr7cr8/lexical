@@ -132,8 +132,8 @@ export class BannerNode1 extends ElementNode {
         */
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
-        // console.log("updateDom", prevNode, this, dom)
 
+        //console.log("updateDom1", prevNode, this, dom, config)
         return true;
     }
 
@@ -262,7 +262,7 @@ export class BannerNode2 extends ElementNode {
     constructor(bgColor) {
         super()
         this.bgColor = bgColor
-
+        
     }
 
     setBgColor(value) {
@@ -322,7 +322,7 @@ export class BannerNode2 extends ElementNode {
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
         // console.log("updateDom", prevNode, this, dom)
-
+        console.log("updateDom2", prevNode, this, dom, config)
         return true;
     }
 
@@ -334,13 +334,13 @@ export class BannerNode2 extends ElementNode {
 
 
                 const styleObj = {
-                  //  ...this.__format && { textAlign: ["left", "center", "right", "justify"][this.__format - 1] },
-                  //  ...this.__indent && { paddingInlineStart: `calc(${this.__indent * 40}px)` },
-                  //  ...this.bgColor && { backgroundColor: this.bgColor },
-                    display:"flex",
-                    backgroundColor:"#DEB887",
-                    gap:"4px",
-                    margin:"4px",
+                    //  ...this.__format && { textAlign: ["left", "center", "right", "justify"][this.__format - 1] },
+                    //  ...this.__indent && { paddingInlineStart: `calc(${this.__indent * 40}px)` },
+                    //  ...this.bgColor && { backgroundColor: this.bgColor },
+                    display: "flex",
+                    backgroundColor: "#DEB887",
+                    gap: "4px",
+                    margin: "4px",
                 }
 
                 generatedElement.style = toStyleString(styleObj)
@@ -364,10 +364,10 @@ export class BannerNode2 extends ElementNode {
         // element.style.borderWidth = "1px"
         // element.style.borderStyle = "solid"
 
-        element.style.display ="flex"
+        element.style.display = "flex"
         element.style.backgroundColor = "#DEB887"
-        element.style.gap="4px"
-        element.style.margin="4px"
+        element.style.gap = "4px"
+        element.style.margin = "4px"
         return element;
     }
 
@@ -494,7 +494,7 @@ export class BannerNode3 extends ElementNode {
         */
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
-        // console.log("updateDom", prevNode, this, dom)
+           console.log("updateDom3", prevNode, this, dom, config)
 
         return true;
     }
@@ -531,19 +531,62 @@ export class BannerNode3 extends ElementNode {
 
     createDOM(config, editor) {
 
-        //   element cannot have siblings
+
+
+
         // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
         const element = document.createElement("td")
+        const btn = document.createElement("button")
+        btn.style.position = "absolute"
+        btn.innerText = "cell"
+        btn.style.right = "4px"
+        btn.onclick = (e) => {
+            // console.log(this)
+            // console.log(editor.getEditorState())
+            editor.getEditorState().read(() => {
+                e.preventDefault()
+
+                console.log(editor)
+
+            })
+        }
         //element.className = config.theme.paragraph
         // addClassNamesToElement(element, config.theme.bannerGraph)
         // element.style = "background: skyblue"
-        //     if (this.bgColor) {
-        element.style.backgroundColor = this.bgColor
+
+        element.style.backgroundColor = "#"+ Math.floor(Math.random()*16777215).toString(16);// this.bgColor
         element.style.borderWidth = "1px"
         element.style.borderStyle = "solid"
         element.style.width = "25%"
         element.style.display = "inline-block"
-        //    }
+        element.style.position = "relative"
+
+
+
+        btn.style.userSelect = "none"
+
+        let show = false
+        this.getChildren().forEach(child => {
+            if (child.getKey() === $getSelection()?.focus?.key) {
+                show = true
+            }
+
+        })
+        if (this.__key === $getSelection()?.focus?.key) {
+            show = true
+        }
+
+      //  btn.style.display = show ? "block" : "none"
+        // if (show || (this.__key === $getSelection()?.focus?.key)) {
+        //     btn.style.display = "block"
+        // }
+        // else {
+        //     btn.style.display = "none"
+        // }
+
+        console.log(this.__key, $getSelection()?.focus?.key, this.getChildren().map(n => n.getKey()), this.__key === $getSelection()?.focus?.key)
+     //   btn.style.display = show ? "block" : "none"
+        show && element.appendChild(btn)
         return element;
     }
 
@@ -581,7 +624,7 @@ export class BannerNode3 extends ElementNode {
 
     insertNewAfter(rangeSelection, shouldRestoreSelection) {
 
-        console.log($isAtNodeEnd(rangeSelection.focus), rangeSelection)
+        //    console.log($isAtNodeEnd(rangeSelection.focus), rangeSelection)
 
 
 
@@ -619,9 +662,41 @@ export function BannerCommandPlugin1() {
     const [editor] = useLexicalComposerContext()
     if (!editor.hasNode(BannerNode1)) { throw new Error('BannerPlugin: "BannerNode1" not registered on editor'); }
 
-    useEffect(() => {
+    const [cellCount, setCellCount] = useState(0)
+    const [posArray, setPosArray] = useState([])
 
-        return editor.registerCommand(
+
+    useEffect(() => {
+        //   console.log(posArray)
+
+        // const remove1 = editor.registerMutationListener(BannerNode1, (mutatedNodes) => {
+        //     for (let [nodeKey, mutation] of mutatedNodes) {
+        //         console.log(nodeKey, mutation)
+        //         let arrpos = []
+        //       //  if (mutation === "created") {
+        //             Array.from(document.getElementsByTagName("td"))
+        //                 .forEach((td, index, arr) => {
+
+        //                     td.style.backgroundColor = "lightgreen"
+        //                     setCellCount(arr.length)
+
+        //                   //  const btn = document.createElement("button")
+
+        //                   //  td.appendChild(btn)
+        //                     arrpos = [...arrpos, { x: td.offsetLeft, y: td.offsetTop }]
+
+        //                     setPosArray(arrpos)
+        //                     // console.log(arrpos)
+        //                 })
+
+        //    //     }
+
+        //     }
+
+        // })
+
+
+        const remove2 = editor.registerCommand(
             INSERT_BANNER_COMMAND1,
             () => {
 
@@ -645,12 +720,12 @@ export function BannerCommandPlugin1() {
                 const b2 = new BannerNode2()
                 const b2_2 = new BannerNode2()
 
-                const b3 = new BannerNode3().append(new ParagraphNode())
-                const b3_2 = new BannerNode3().append(new ParagraphNode())
+                const b3 = new BannerNode3()//.append(new ParagraphNode())
+                const b3_2 = new BannerNode3()//.append(new ParagraphNode())
 
-                const b3_3 = new BannerNode3().append(new ParagraphNode())
-                const b3_4 = new BannerNode3().append(new ParagraphNode())
-                const b3_5 = new BannerNode3().append(new ParagraphNode())
+                const b3_3 = new BannerNode3()//.append(new ParagraphNode())
+                const b3_4 = new BannerNode3()//.append(new ParagraphNode())
+                const b3_5 = new BannerNode3()//.append(new ParagraphNode())
 
 
                 b2.append(b3)
@@ -684,18 +759,29 @@ export function BannerCommandPlugin1() {
             COMMAND_PRIORITY_NORMAL,
         );
 
+        return function () {
+            //  remove1()
+            remove2()
+        }
 
 
-    }, [editor])
+    }, [editor, cellCount, posArray])
 
 
 
+    return <></>
 
 
+    // return (
 
-    return (
-        <></>
-    )
+    //     Array(cellCount).fill("").map((button, index) => <button key={index} style={{
+    //         position: "absolute",
+    //         left: posArray[index]?.x || 10,
+    //         top: posArray[index]?.y || 10
+
+
+    //     }}>cell</button>)
+    // )
 
 }
 

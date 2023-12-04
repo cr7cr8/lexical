@@ -1,7 +1,8 @@
 import toStyleString from 'to-style/src/toStyleString';
 import toStyle from 'to-style';
 import { computePosition, flip, shift } from '@floating-ui/dom';
-import { useEffect, useState, useMemo, useLayoutEffect, forwardRef, useRef } from 'react';
+import { useEffect, useState, useMemo, useLayoutEffect, forwardRef, useRef, Component, createRef } from 'react';
+import { renderToStaticMarkup } from "react-dom/server"
 import {
     $getRoot, $getSelection, $createParagraphNode, $createTextNode, $isRangeSelection, ParagraphNode, $setSelection, $isRootNode,
     $insertNodes, TextNode, $createRangeSelection,
@@ -163,7 +164,7 @@ export class BannerNode extends ElementNode {
 
     //     // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
     //     const element = document.createElement("table")
-       
+
     //     const div1 = document.createElement("tr")
     //     div1.appendChild(document.createElement("td"))
     //     console.log(div1)
@@ -185,9 +186,13 @@ export class BannerNode extends ElementNode {
 
     createDOM(config, editor) {
 
+  
+
         //   element cannot have siblings
         // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
         const element = document.createElement("div")
+
+  
         //element.className = config.theme.paragraph
         addClassNamesToElement(element, config.theme.bannerGraph)
         // element.style = "background: skyblue"
@@ -348,7 +353,7 @@ export function BannerCommandPlugin() {
                     node = node.getParent()
                 }
                 //console.log(node)
-             
+
                 node.replace(new BannerNode(), true)
 
                 // console.log(allNodes[0].getFirstDescendant())
@@ -457,3 +462,4 @@ export function BannerColorButton() {
         }}>BannerColour</button>
     )
 }
+
