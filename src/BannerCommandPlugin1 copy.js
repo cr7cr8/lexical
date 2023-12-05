@@ -134,7 +134,7 @@ export class BannerNode1 extends ElementNode {
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
 
-        // console.log("updateDom1", prevNode, this, dom, config)
+        console.log("updateDom1", prevNode, this, dom, config)
         return true;
     }
 
@@ -531,77 +531,6 @@ export class BannerNode3 extends ElementNode {
 
 
 
-    // createDOM(config, editor) {
-
-
-
-
-    //     // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
-    //     const element = document.createElement("td")
-    //     const btn = document.createElement("button")
-    //     btn.style.position = "absolute"
-    //     btn.innerText = "cell"
-    //     btn.style.right = "4px"
-    //     btn.onclick = (e) => {
-    //         // console.log(this)
-    //         // console.log(editor.getEditorState())
-    //         editor.update(() => {
-    //             e.preventDefault()
-    //             this.setBgColor("gray") // cannot use
-    //             console.log(editor)
-
-    //         })
-    //     }
-    //     //element.className = config.theme.paragraph
-    //     // addClassNamesToElement(element, config.theme.bannerGraph)
-    //     // element.style = "background: skyblue"
-
-    //     //    element.style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16);// this.bgColor
-    //     element.style.backgroundColor = this.bgColor
-    //     element.style.borderWidth = "1px"
-    //     element.style.borderStyle = "solid"
-    //     element.style.width = "25%"
-    //     element.style.display = "inline-block"
-    //     element.style.position = "relative"
-
-
-
-    //     btn.style.userSelect = "none"
-
-    //     let show = false
-    //     this.getChildren().forEach(child => {
-    //         if (child.getKey() === $getSelection()?.focus?.key) {
-    //             show = true
-    //         }
-
-    //     })
-    //     if (this.__key === $getSelection()?.focus?.key) {
-    //         show = true
-    //     }
-
-    //     //  btn.style.display = show ? "block" : "none"
-    //     // if (show || (this.__key === $getSelection()?.focus?.key)) {
-    //     //     btn.style.display = "block"
-    //     // }
-    //     // else {
-    //     //     btn.style.display = "none"
-    //     // }
-
-    //     //  console.log(this.__key, $getSelection()?.focus?.key, this.getChildren().map(n => n.getKey()), this.__key === $getSelection()?.focus?.key)
-    //     if (show) {
-    //         console.log(this.getKey(), "true")
-    //         btn.style.display = "block"
-    //     }
-    //     else {
-    //         console.log(this.getKey(), "false")
-    //         btn.style.display = "none"
-    //     }
-
-    //     //    btn.style.display = show ? "block" : "none"
-    //     show && element.appendChild(btn)
-    //     return element;
-    // }
-
     createDOM(config, editor) {
 
 
@@ -609,7 +538,20 @@ export class BannerNode3 extends ElementNode {
 
         // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
         const element = document.createElement("td")
+        const btn = document.createElement("button")
+        btn.style.position = "absolute"
+        btn.innerText = "cell"
+        btn.style.right = "4px"
+        btn.onclick = (e) => {
+            // console.log(this)
+            // console.log(editor.getEditorState())
+            editor.update(() => {
+                e.preventDefault()
+                this.setBgColor("gray") // cannot use
+                console.log(editor)
 
+            })
+        }
         //element.className = config.theme.paragraph
         // addClassNamesToElement(element, config.theme.bannerGraph)
         // element.style = "background: skyblue"
@@ -624,9 +566,110 @@ export class BannerNode3 extends ElementNode {
 
 
 
+        btn.style.userSelect = "none"
+
+        let show = false
+        this.getChildren().forEach(child => {
+            if (child.getKey() === $getSelection()?.focus?.key) {
+                show = true
+            }
+
+        })
+        if (this.__key === $getSelection()?.focus?.key) {
+            show = true
+        }
+
+        //  btn.style.display = show ? "block" : "none"
+        // if (show || (this.__key === $getSelection()?.focus?.key)) {
+        //     btn.style.display = "block"
+        // }
+        // else {
+        //     btn.style.display = "none"
+        // }
+
+        //  console.log(this.__key, $getSelection()?.focus?.key, this.getChildren().map(n => n.getKey()), this.__key === $getSelection()?.focus?.key)
+        if (show) {
+            console.log(this.getKey(), "true")
+            btn.style.display = "block"
+        }
+        else {
+            console.log(this.getKey(), "false")
+            btn.style.display = "none"
+        }
+
+        //    btn.style.display = show ? "block" : "none"
+        show && element.appendChild(btn)
+        return element;
+    }
+
+    createDOM(config, editor) {
 
 
 
+
+        // const element =super.createDOM(config,editor)//  --> works if extends paragraphnode
+        const element = document.createElement("td")
+        const btn = document.createElement("button")
+        btn.style.position = "absolute"
+        btn.innerText = "cell"
+        btn.style.right = "4px"
+        btn.onclick = (e) => {
+            // console.log(this)
+            // console.log(editor.getEditorState())
+            editor.update(() => {
+                e.preventDefault()
+                this.setBgColor("gray") // cannot use
+                console.log(editor)
+
+            })
+        }
+        //element.className = config.theme.paragraph
+        // addClassNamesToElement(element, config.theme.bannerGraph)
+        // element.style = "background: skyblue"
+
+        //    element.style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16);// this.bgColor
+        element.style.backgroundColor = this.bgColor
+        element.style.borderWidth = "1px"
+        element.style.borderStyle = "solid"
+        element.style.width = "25%"
+        element.style.display = "inline-block"
+        element.style.position = "relative"
+
+
+
+        btn.style.userSelect = "none"
+
+        let show = false
+        this.getChildren().forEach(child => {
+            if (child.getKey() === $getSelection()?.focus?.key) {
+                show = true
+            }
+
+        })
+        if (this.__key === $getSelection()?.focus?.key) {
+            show = true
+        }
+
+        //  btn.style.display = show ? "block" : "none"
+        // if (show || (this.__key === $getSelection()?.focus?.key)) {
+        //     btn.style.display = "block"
+        // }
+        // else {
+        //     btn.style.display = "none"
+        // }
+
+        //  console.log(this.__key, $getSelection()?.focus?.key, this.getChildren().map(n => n.getKey()), this.__key === $getSelection()?.focus?.key)
+        if (show) {
+            console.log(this.getKey(), "true")
+            btn.style.display = "block"
+        }
+        else {
+            console.log(this.getKey(), "false")
+            btn.style.display = "none"
+        }
+
+        //    btn.style.display = show ? "block" : "none"
+        show && element.appendChild(btn)
         return element;
     }
 
@@ -790,12 +833,8 @@ export function BannerCommandPlugin1() {
                 b1.append(b2)
                 b1.append(b2_2)
 
-                if(node.getChildrenSize()==0){
-                    node.replace(b1, true)
-                }
-                else{
-                    node.insertAfter(b1,true)
-                }
+
+                node.replace(b1, true)
 
                 // console.log(allNodes[0].getFirstDescendant())
                 // console.log("is at node end", $isAtNodeEnd(selection.focus))
@@ -870,16 +909,7 @@ export class CellNode extends DecoratorNode {
 
     constructor() {
         super()
-        this.show = false
     }
-    setShow(value) {
-        const self = this.getWritable()
-        self.show = value
-    }
-    getShow() {
-        return this.show
-    }
-
     static getType() {
         return "CellNode";
     }
@@ -930,61 +960,10 @@ export class CellNode extends DecoratorNode {
 }
 
 function CellReactNode(props) {
-
-    const node = props.node
     const [editor] = useLexicalComposerContext()
-    const [show, setShow] = useState(false)
-
-
-    // useEffect(() => {
-    //     const remove1 = editor.registerUpdateListener(() => {
-
-    //         editor.update(() => {
-    //             const selection = $getSelection()
-    //             const shouldShow = node.getParent().getChildren().map(n => n.getKey()).includes(selection.focus.key)
-
-    //             console.log(node.getParent().getChildren().map(n => n.getKey()))
-    //             //  node.getSiblings().forEach(n=>console.log(n))
-
-
-    //             // if (((node.getParent().getKey() === selection.focus.key))) {
-
-    //             //     console.log("1111")
-    //             //     setShow(true)
-    //             // }
-    //             // else if(shouldShow){
-    //             //     console.log("22222")
-    //             //     setShow(true)
-    //             // }
-    //             // else {
-    //             //     console.log("33333")
-    //             //     setShow(false)
-    //             // }
-
-
-
-
-    //             // else if ((node.getParent().getKey() !== selection.focus.key) && !shouldShow && (node.show === true)) {
-    //             //     console.log("2222")
-    //             //     node.setShow(false)
-    //             // }
-    //             // else if (node.show) {
-    //             //     console.log("33333")
-    //             //     node.setShow(false)
-    //             // }
-    //         })
-
-    //     })
-
-    //     return function () {
-    //         remove1()
-    //     }
-
-    // }, [editor])
-
 
     return (
-        <button style={{ position: "absolute", right: 0, display: show ? "block" : "block",zIndex:1000 }}>O</button>
+        <button>O</button>
     )
 
 }

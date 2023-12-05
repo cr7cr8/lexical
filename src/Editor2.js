@@ -66,7 +66,7 @@ import { SepNode, SepNodePlugin, TextNode2 } from './SepNode';
 
 import { BannerNode, BannerCommandPlugin, BannerButton, BannerColorButton } from './BannerCommandPlugin';
 
-import { BannerNode1, BannerNode2, BannerNode3, BannerCommandPlugin1, BannerButton1 } from './BannerCommandPlugin1';
+import { BannerNode1, BannerNode2, BannerNode3, BannerCommandPlugin1, BannerButton1, CellNode } from './BannerCommandPlugin1';
 
 import { ImageNode, ImageCommandPlugin, ImageButton } from './ImageCommandPlugin';
 
@@ -148,7 +148,7 @@ export function Editor2() {
             onError: (err) => console.error(err),
             nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, ParagraphNode, AutoLinkNode, BeautifulMentionNode, BannerNode, MentionNode, SepNode, ImageNode,
               TableCellNode, TableNode, TableRowNode,
-              BannerNode1, BannerNode2, BannerNode3,
+              BannerNode1, BannerNode2, BannerNode3,CellNode,
               //    TextNode2,
 
               //   {

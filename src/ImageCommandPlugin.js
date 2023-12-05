@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, forwardRef } from "react";
 import { Resizable, ResizableBox } from 'react-resizable';
 
 
@@ -260,7 +260,7 @@ function ReactImageNode(props) {
                     style={{ display: "inline-block", position: "relative", background: "brown" }}
                     lockAspectRatio
                     onResize={(event, { element, size }) => {
-                        console.log(size)
+                      //  console.log(size)
 
 
 
@@ -282,10 +282,16 @@ function ReactImageNode(props) {
                     }}
                     minConstraints={[minW, minH]}
                     maxConstraints={[maxW, maxH]}
-                    axis='x'
-                    ResizeHandleAxis="se"
+
+                    resizeHandles={["se"]}
                     className='react-resizable'
-                    handle={<div className="react-resizable-handle" ></div>}
+                    // handle={
+                    //     <div className="react-resizable-handle" ></div>
+                    // }
+                    handle={<MyHandle />}
+
+                // draggableOpts={{grid: [25, 25]}}
+
                 // draggableOpts={{grid: [25, 25]}}
                 >
                     <img className="box" src={imageUrl || props.node.url} style={{ backgroundColor: "pink", maxWidth: width, maxHeight: height, objectFit: "contain" }}
@@ -445,3 +451,38 @@ export function ImageButton() {
     )
 
 }
+
+
+const MyHandle = forwardRef((props, ref) => {
+    console.log(props)
+    const { handleAxis, ...restProps } = props;
+    return (
+        <>
+            <div ref={ref}
+
+                className="react-resizable-handle1"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle2"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle3"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle4"
+                handleAxis="ne"
+                {...restProps}
+            />
+
+        </>
+    )
+});
