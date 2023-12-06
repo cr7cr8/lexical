@@ -790,11 +790,11 @@ export function BannerCommandPlugin1() {
                 b1.append(b2)
                 b1.append(b2_2)
 
-                if(node.getChildrenSize()==0){
+                if (node.getChildrenSize() == 0) {
                     node.replace(b1, true)
                 }
-                else{
-                    node.insertAfter(b1,true)
+                else {
+                    node.insertAfter(b1, true)
                 }
 
                 // console.log(allNodes[0].getFirstDescendant())
@@ -936,55 +936,49 @@ function CellReactNode(props) {
     const [show, setShow] = useState(false)
 
 
-    // useEffect(() => {
-    //     const remove1 = editor.registerUpdateListener(() => {
+    useEffect(() => {
+        const remove1 = editor.registerUpdateListener(() => {
 
-    //         editor.update(() => {
-    //             const selection = $getSelection()
-    //             const shouldShow = node.getParent().getChildren().map(n => n.getKey()).includes(selection.focus.key)
+            editor.update(() => {
+                const selection = $getSelection()
+             
 
-    //             console.log(node.getParent().getChildren().map(n => n.getKey()))
-    //             //  node.getSiblings().forEach(n=>console.log(n))
+                // const shouldShow = (node.getParent().getChildren().filter(n => {
+                //     return n.isSelected()
+                // }).length > 0) || (selection.focus.key === node.getParent().getKey())
 
 
-    //             // if (((node.getParent().getKey() === selection.focus.key))) {
-
-    //             //     console.log("1111")
-    //             //     setShow(true)
-    //             // }
-    //             // else if(shouldShow){
-    //             //     console.log("22222")
-    //             //     setShow(true)
-    //             // }
-    //             // else {
-    //             //     console.log("33333")
-    //             //     setShow(false)
-    //             // }
+                // if (show!==shouldShow) setShow(shouldShow)
 
 
 
+           
+            })
 
-    //             // else if ((node.getParent().getKey() !== selection.focus.key) && !shouldShow && (node.show === true)) {
-    //             //     console.log("2222")
-    //             //     node.setShow(false)
-    //             // }
-    //             // else if (node.show) {
-    //             //     console.log("33333")
-    //             //     node.setShow(false)
-    //             // }
-    //         })
+        })
 
-    //     })
+        return function () {
+            remove1()
+        }
 
-    //     return function () {
-    //         remove1()
-    //     }
-
-    // }, [editor])
+    }, [editor,show])
 
 
     return (
-        <button style={{ position: "absolute", right: 0, display: show ? "block" : "block",zIndex:1000 }}>O</button>
+        <button style={{ position: "absolute", right: 0, display: show ? "block" : "none", zIndex: 1000 }}
+
+            onClick={function () {
+
+                editor.update(() => {
+                    const b3 = new BannerNode3()
+                    b3.append(new CellNode())
+                    node.getParent().insertAfter(b3)
+
+                })
+
+            }}
+
+        >O</button>
     )
 
 }
