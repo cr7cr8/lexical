@@ -941,18 +941,16 @@ function CellReactNode(props) {
 
             editor.update(() => {
                 const selection = $getSelection()
-             
 
-                // const shouldShow = (node.getParent().getChildren().filter(n => {
-                //     return n.isSelected()
-                // }).length > 0) || (selection.focus.key === node.getParent().getKey())
+                if (!selection) return
 
 
-                // if (show!==shouldShow) setShow(shouldShow)
+                const shouldShow = (node.getParent().getChildren().filter(n => {
+                    return n.isSelected()
+                }).length > 0) || (selection.focus.key === node.getParent().getKey())
 
+                if (show !== shouldShow) setShow(shouldShow)
 
-
-           
             })
 
         })
@@ -961,15 +959,16 @@ function CellReactNode(props) {
             remove1()
         }
 
-    }, [editor,show])
+    }, [editor, show])
 
 
     return (
         <button style={{ position: "absolute", right: 0, display: show ? "block" : "none", zIndex: 1000 }}
 
-            onClick={function () {
+            onClick={function (e) {
 
                 editor.update(() => {
+
                     const b3 = new BannerNode3()
                     b3.append(new CellNode())
                     node.getParent().insertAfter(b3)
