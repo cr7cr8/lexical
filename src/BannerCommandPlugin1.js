@@ -525,8 +525,12 @@ export class BannerNode3 extends ElementNode {
                     borderStyle: "solid",
                     width: `calc(0% + ${this.width}px)`,
                     display: "inline-block",
+
+
                     wordBreak: "break-all",
                     overflow: "auto",
+
+
 
                 }
 
@@ -636,7 +640,9 @@ export class BannerNode3 extends ElementNode {
         element.id = this.__key
 
 
-
+        // element.style.display = "inline-flex"
+        // element.style.flexDirection = "column"
+        // element.style.justifyContent = "center"
 
         const btn = document.createElement("span")
         btn.style.height = "20px"
