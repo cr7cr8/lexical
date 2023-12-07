@@ -133,7 +133,7 @@ export class ImageNode extends DecoratorNode {
                 const el = document.createElement("span")
                 el.setAttribute("data-url", this.url)
                 el.setAttribute("data-width", this.width || 100)
-                //el.setAttribute("data-height", this.height || 100)
+                el.setAttribute("data-height", this.height || 100)
                 el.setAttribute("data-type", this.getType())
                 // el.append("this is a react node")
                 generatedElement.appendChild(el)
@@ -176,11 +176,30 @@ function ReactImageNode(props) {
 
     const inputRef = useRef()
 
+    // useEffect(() => {
+
+    //     console.log(new Date())
+
+    // }, [])
+
+    // useEffect(() => {
+
+    //     editor.update(() => {
+    //         props.node.setUrl(imageUrl)
+    //     })
 
 
-    const [imageW, setImageW] = useState(props.node.width || 100)
-    const preImageW = useRef()
-    const initialPageX = useRef()
+    // }, [imageUrl])
+    const [width, setWidth] = useState(props.node.width || 100);
+    const [height, setHeight] = useState(props.node.height || 100);
+
+
+    const [minW, setMinW] = useState(100)
+    const [minH, setMinH] = useState(100)
+
+
+    const [maxW, setMaxW] = useState(600)
+    const [maxH, setMaxH] = useState(600)
 
     return (
         <>
@@ -215,6 +234,8 @@ function ReactImageNode(props) {
                             const siblingSize = imageNode.getPreviousSiblings().length
 
 
+
+
                             const selection = $getSelection()
                             const newSelection = $createRangeSelection();
                             newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
@@ -233,45 +254,136 @@ function ReactImageNode(props) {
 
                 >IMAGE</button>
 
+                // : <ResizableBox
+                //     width={width}
+                //     height={height}
+                //     style={{ display: "inline-block", position: "relative", background: "brown" }}
+                //     lockAspectRatio
+                //     onResize={(event, { element, size }) => {
+                //         //  console.log(size)
 
+
+
+                //         setWidth(size.width);
+                //         setHeight(size.height);
+                //         // editor.update(() => {
+                //         //     props.node.setWidth(size.width);
+                //         //     props.node.setHeight(size.height);
+
+                //         // })
+
+                //     }}
+                //     onResizeStop={(event, { element, size }) => {
+                //         editor.update(() => {
+                //             props.node.setWidth(size.width);
+                //             props.node.setHeight(size.height);
+
+                //         })
+                //     }}
+                //     minConstraints={[minW, minH]}
+                //     maxConstraints={[maxW, maxH]}
+
+                //     resizeHandles={["se"]}
+                //     className='react-resizable'
+                //     // handle={
+                //     //     <div className="react-resizable-handle" ></div>
+                //     // }
+                //     handle={<MyHandle />}
+
+                // // draggableOpts={{grid: [25, 25]}}
+
+                // // draggableOpts={{grid: [25, 25]}}
+                // >
+                //     <img className="box" src={imageUrl || props.node.url} style={{ backgroundColor: "pink", maxWidth: width, maxHeight: height, objectFit: "contain" }}
+
+                //         onClick={function () {
+                //             inputRef.current.click()
+
+                //         }}
+
+                //         onLoad={function (e) {
+                //             if (e.target.width <= e.target.height) {
+
+                //                 setMinW(100)
+                //                 setMinH(100 * e.target.height / e.target.width)
+
+                //                 setMaxW(600)
+                //                 setMaxH(600 * e.target.height / e.target.width)
+                //             }
+                //             else {
+
+                //                 setMinW(100 * e.target.width / e.target.height)
+                //                 setMinH(100)
+
+                //                 setMaxW(600)
+                //                 setMaxH(600 * (e.target.height / e.target.width))
+                //             }
+                //             setWidth(e.target.width)
+                //             setHeight(e.target.height)
+
+                //         }}
+
+                //     />
+
+                // </ResizableBox>
                 : <img src={imageUrl || props.node.url}
 
-                    style={{
-                        objectFit: "contain", background: "lightblue",
-                        width: imageW, height: "auto",
-                        cursor:"se-resize"
-                    }}
+                    style={{ objectFit: "contain", background: "lightblue", width: "auto", height: "auto", 
+                    
+                    
+                    
+                    maxHeight: 200, maxWidth: 200 }}
                     alt="BigCo Inc. logo"
 
                     draggable={true}
-                    onDragStart={function (e) {
-
-                        initialPageX.current = e.pageX
-                        preImageW.current = imageW
-
+                    onDragStart={function(e){
+                        // console.log(e.pageX,e.pageY)
+                        // e.movementX = e.pageX
+                        // e.movementY = e.pageY
                     }}
-                    onDrag={function (e) {
-                        setImageW(preImageW.current + e.pageX - initialPageX.current)
+                    onDrag={function(e){
+                        console.log(e.movementX,e.movementY)
                     }}
-                    onDragEnd={function (e) {
-                        //  console.log(e)
-                        setImageW(preImageW.current + e.pageX - initialPageX.current)
-                        editor.update(() => {
-                            props.node.setWidth(preImageW.current + e.pageX - initialPageX.current);
-                        })
-
+                    onDragEnd={function(e){
+                      //  console.log(e)
                     }}
+                   
 
 
+                    onResize={function(e){
+                        console.log(e)
+                    }}
 
                     onClick={function () {
                         inputRef.current.click()
+                        editor.update(() => {
+
+                            // const imageNode = props.node
+                            // const parentNode = imageNode.getParent()
+                            // const siblingSize = imageNode.getPreviousSiblings().length
+
+
+
+
+                            // const selection = $getSelection()
+                            // const newSelection = $createRangeSelection();
+                            // newSelection.anchor.set(parentNode.getKey(), siblingSize + 1, "element")
+                            // newSelection.focus.set(parentNode.getKey(), siblingSize + 1, "element")
+                            // newSelection.format = selection.format
+
+
+
+                            // $setSelection(newSelection)
+
+
+                        })
                     }}
 
 
                     onLoad={function (e) {
+                           console.log(window.getComputedStyle(e.target).width, window.getComputedStyle(e.target).height)
 
-                        setImageW(Number(window.getComputedStyle(e.target).width.replace("px", "")))
+
 
 
                     }}
@@ -284,7 +396,16 @@ function ReactImageNode(props) {
 
 
 
- 
+    return (
+        //<span>ABC</span>
+        <img src={props.node.url} width={props.node.width} height={props.node.height} style={{ objectFit: "contain", background: "lightblue" }} alt="BigCo Inc. logo"
+
+            onClick={() => {
+                console.log("image click")
+            }}
+        />
+
+    )
 
 }
 
@@ -355,3 +476,36 @@ export function ImageButton() {
 }
 
 
+const MyHandle = forwardRef((props, ref) => {
+    // console.log(props)
+    const { handleAxis, ...restProps } = props;
+    return (
+        <>
+            <div ref={ref}
+
+                className="react-resizable-handle1"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle2"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle3"
+
+                {...restProps}
+            />
+            <div ref={ref}
+
+                className="react-resizable-handle4"
+
+                {...restProps}
+            />
+
+        </>
+    )
+});

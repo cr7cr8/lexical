@@ -125,8 +125,16 @@ export function ToolBarPlugin({ buttons, ...props }) {
                     setShow(!selection?.isCollapsed())
 
                     if ($isRangeSelection(selection) && !selection.isCollapsed()) {
-                        setX(window.getSelection().getRangeAt(0).getBoundingClientRect().x)
-                        setY(window.getSelection().getRangeAt(0).getBoundingClientRect().y)
+
+                        //console.log(window.getSelection().rangeCount)
+                        if (window.getSelection().rangeCount) {
+                            setX(window.getSelection().getRangeAt(0).getBoundingClientRect().x)
+                            setY(window.getSelection().getRangeAt(0).getBoundingClientRect().y)
+                        }
+                        else{
+                            window.getSelection().addRange()
+                        }
+
                     }
                 }
             })
@@ -327,7 +335,7 @@ export function TableButton() {
                     const tableNode = new TableNode()
                     const tableRow = new TableRowNode()
                     const tableCell = new TableCellNode()
-                
+
                 })
 
 

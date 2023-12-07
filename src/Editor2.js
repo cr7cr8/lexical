@@ -381,15 +381,17 @@ export function Editor2() {
               }
               else if (attribs["data-type"] === "ImageNode") {
 
-                console.log(attribs["data-width"], attribs["data-height"],)
+                //console.log(attribs["data-width"], attribs["data-height"],)
 
                 return (
                   <img style={{
                     backgroundColor: "lightblue", objectFit: "contain",
                     objectFit: "contain", background: "lightblue",
 
-                    maxWidth: attribs["data-width"] + "px",// 200,
-                    maxHeight: attribs["data-height"] + "px",//200, 
+                    //maxWidth: attribs["data-width"] + "px",// 200,
+                    //maxHeight: attribs["data-height"] + "px",//200, 
+                    width: attribs["data-width"] + "px",
+                    height:"auto"
                   }}
 
                     src={attribs["data-url"]}

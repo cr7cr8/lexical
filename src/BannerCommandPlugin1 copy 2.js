@@ -134,8 +134,8 @@ export class BannerNode1 extends ElementNode {
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
 
-        //console.log("updateDom1", prevNode, this, dom, config)
-        return false;
+        // console.log("updateDom1", prevNode, this, dom, config)
+        return true;
     }
 
     exportDOM(...args) {
@@ -321,9 +321,10 @@ export class BannerNode2 extends ElementNode {
         * DOM element replacing with a new copy from createDOM.
         */
     updateDOM(prevNode, dom, config) {
-
-        //console.log("updateDom2", prevNode, this, dom, config)
-        return false;
+        //updateDOM( ...args) {
+        // console.log("updateDom", prevNode, this, dom)
+        console.log("updateDom2", prevNode, this, dom, config)
+        return true;
     }
 
     exportDOM(...args) {
@@ -435,7 +436,7 @@ export class BannerNode3 extends ElementNode {
     constructor(bgColor) {
         super()
         this.bgColor = bgColor
-        this.width = 100
+        this.width = 0
     }
 
     setBgColor(value) {
@@ -453,9 +454,7 @@ export class BannerNode3 extends ElementNode {
 
 
     static clone(node) {
-        const cellNode = new BannerNode3(node.bgColor);
-        cellNode.setWidth(node.width)
-        return cellNode
+        return new BannerNode3(node.bgColor);
 
 
     }
@@ -465,12 +464,11 @@ export class BannerNode3 extends ElementNode {
     }
 
     static importJSON(...args) {
-        const { bgColor, indent, format, width } = args[0]
+        const { bgColor, indent, format } = args[0]
 
         const banner = new BannerNode3(bgColor)
         banner.setIndent(indent)
         banner.setFormat(format)
-        banner.setWidth(width)
         console.log(args[0])
 
         return banner
@@ -484,7 +482,7 @@ export class BannerNode3 extends ElementNode {
             ...super.exportJSON(),
             type: "BannerNode3",
             bgColor: this.bgColor,
-            width: this.width,
+
             //    version: 1,
             //   children: [],
             //customValue: "anything you like",
@@ -501,9 +499,7 @@ export class BannerNode3 extends ElementNode {
         */
     updateDOM(prevNode, dom, config) {
         //updateDOM( ...args) {
-        //console.log("updateDom3", prevNode, this, dom, config)
-
-        if (prevNode.width !== this.width) return true
+        console.log("updateDom3", prevNode, this, dom, config)
 
         return true;
     }
@@ -523,15 +519,12 @@ export class BannerNode3 extends ElementNode {
 
                     borderWidth: "1px",
                     borderStyle: "solid",
-                    width: `calc(0% + ${this.width}px)`,
-                    display: "inline-block",
-                    wordBreak: "break-all",
-                    overflow: "auto",
+                    width: `calc(25% + ${this.width}px)`,
+                    display: "inline-block"
 
                 }
 
                 generatedElement.className = "tr_css"
-                //generatedElement.appendChild(document.createElement("br"))
                 generatedElement.style = toStyleString(styleObj)
 
 
@@ -629,36 +622,14 @@ export class BannerNode3 extends ElementNode {
         element.style.backgroundColor = this.bgColor
         element.style.borderWidth = "1px"
         element.style.borderStyle = "solid"
-        element.style.width = `calc(0% + ${this.width}px)`
+        element.style.width = `calc(25% + ${this.width}px)`
         element.style.display = "inline-block"
         element.style.position = "relative"
-        element.style.overflow = "auto"
         element.id = this.__key
 
 
 
 
-        const btn = document.createElement("span")
-        btn.style.height = "20px"
-        btn.style.width = "20px"
-        btn.style.display = "inline-block"
-        btn.style.backgroundColor = "lightgray"
-        //btn.innerText = "o"
-        btn.style.position = "absolute"
-        // btn.style.left = 0
-        // btn.style.top = 0
-        btn.style.right = 0
-        btn.style.userSelect = "none"
-        btn.id = "btn-" + this.__key
-        btn.style.zIndex = 1000
-        btn.style.opacity = 0
-        btn.onmouseenter = function () { btn.style.opacity = 1 }
-        btn.onmouseleave = function () { btn.style.opacity = 0 }
-
-        //  btn.contentEditable="false"
-
-
-        element.appendChild(btn)
 
         return element;
     }
@@ -737,7 +708,6 @@ export function BannerCommandPlugin1() {
 
 
 
-    const [keyArr, setKeyArr] = useState([])
 
     useEffect(() => {
 
@@ -767,29 +737,20 @@ export function BannerCommandPlugin1() {
                 const b2 = new BannerNode2()
                 const b2_2 = new BannerNode2()
 
-                const b3 = new BannerNode3().append(new ParagraphNode())
-                const b3_2 = new BannerNode3().append(new ParagraphNode())
+                // const b3 = new BannerNode3()//.append(new ParagraphNode())
+                // const b3_2 = new BannerNode3()//.append(new ParagraphNode())
 
-                const b3_3 = new BannerNode3().append(new ParagraphNode())
-                const b3_4 = new BannerNode3().append(new ParagraphNode())
-                const b3_5 = new BannerNode3().append(new ParagraphNode())
-
-
-                // const b3 = new BannerNode3().append(new CellNode())
-                // const b3_2 = new BannerNode3().append(new CellNode())
-
-                // const b3_3 = new BannerNode3().append(new CellNode())
-                // const b3_4 = new BannerNode3().append(new CellNode())
-                // const b3_5 = new BannerNode3().append(new CellNode())
+                // const b3_3 = new BannerNode3()//.append(new ParagraphNode())
+                // const b3_4 = new BannerNode3()//.append(new ParagraphNode())
+                // const b3_5 = new BannerNode3()//.append(new ParagraphNode())
 
 
+                const b3 = new BannerNode3().append(new CellNode())
+                const b3_2 = new BannerNode3().append(new CellNode())
 
-                // const b3 = new BannerNode3()
-                // const b3_2 = new BannerNode3()
-
-                // const b3_3 = new BannerNode3()
-                // const b3_4 = new BannerNode3()
-                // const b3_5 = new BannerNode3()
+                const b3_3 = new BannerNode3().append(new CellNode())
+                const b3_4 = new BannerNode3().append(new CellNode())
+                const b3_5 = new BannerNode3().append(new CellNode())
 
 
 
@@ -828,131 +789,13 @@ export function BannerCommandPlugin1() {
             COMMAND_PRIORITY_NORMAL,
         );
 
-
-        const remove2 = editor.registerMutationListener(BannerNode3, function (mutatedNodes) {
-
-
-            for (let [nodeKey, mutation] of mutatedNodes) {
-
-                let preMoveX = 0
-                let preMoveY = 0
-                let preWidth = 0
-
-                editor.update(function () {
-
-                    //if (mutation === "created") {
-                    const cell = document.getElementById(nodeKey)
-                    const btn = document.getElementById("btn-" + nodeKey)
-                    const node = $getNodeByKey(nodeKey)
-
-                    if (!cell) return
-                    // console.log("===", node.width)
-                    //     setKeyArr(pre => { return [...pre, nodeKey] })
-                    btn.draggable = "true"
-
-                    btn.onclick = function (e) {
-                        console.log(node)
-                        // editor.update(() => {
-                        //     node.setWidth(100 * Math.random())
-                        // })
-                    }
-                    btn.oncontextmenu = function (e) {
-                        console.log("right clicked")
-                    }
-
-
-                    btn.ondragstart = function (e) {
-
-                        preMoveX = e.pageX
-                        preMoveY = e.pageY
-                        preWidth = node.width
-                    }
-                    btn.ondrag = function (e) {
-                        editor.update(() => {
-                            node.setWidth(preWidth + e.pageX - preMoveX)
-                        })
-                    }
-                    btn.ondragend = function (e) {
-                        editor.update(() => {
-                            node.setWidth(preWidth + e.pageX - preMoveX)
-                        })
-                    }
-
-
-
-
-                    //  console.log(mutation, cell)
-                    // cell.draggable = "true"
-                    // cell.ondrag = function (e) {
-                    //     console.log(e.pageX, e.pageY)
-                    // }
-                    //  }
-
-
-
-
-                })
-
-
-                editor.update(function () {
-
-                    const node = $getNodeByKey(nodeKey)
-                    if (node && (!node.getChildrenSize())) {
-                        node.remove()
-                    }
-
-                })
-
-
-            }
-        })
-
-
-        const remove3 = editor.registerMutationListener(BannerNode2, function (mutatedNodes) {
-
-            for (let [nodeKey, mutation] of mutatedNodes) {
-                editor.update(function () {
-
-                    const node = $getNodeByKey(nodeKey)
-                    if (node && (!node.getChildrenSize())) {
-                        node.remove()
-                    }
-
-                })
-
-            }
-
-
-        })
-
-
-        const remove4 = editor.registerMutationListener(BannerNode1, function (mutatedNodes) {
-
-            for (let [nodeKey, mutation] of mutatedNodes) {
-                editor.update(function () {
-
-                    const node = $getNodeByKey(nodeKey)
-                    if (node && (!node.getChildrenSize())) {
-                        node.replace(new ParagraphNode())
-                    }
-
-                })
-
-            }
-
-
-        })
-
         return function () {
 
             remove1()
-            remove2()
-            remove3()
-            remove4()
         }
 
 
-    }, [editor, keyArr])
+    }, [editor])
 
 
 
@@ -962,33 +805,6 @@ export function BannerCommandPlugin1() {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export function BannerButton1() {
 
@@ -1144,16 +960,16 @@ function CellReactNode(props) {
 
             }}
             onDrag={function (e) {
-
+        
 
                 setMoveX(e.pageX - startX.current)
                 setMoveY(e.pageY - startY.current)
+          
 
-
-
+            
             }}
             onDragEnd={function (e) {
-
+             
 
 
                 setPreMoveX(moveX + preMoveX)
@@ -1167,7 +983,7 @@ function CellReactNode(props) {
                 // editor.update(()=>{
                 //     node.getParent().setWidth(moveX)
                 // })
-
+                
 
 
             }}
