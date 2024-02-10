@@ -25,32 +25,102 @@ function App_() {
       handle={<div className="box" >aaa</div>}
     // draggableOpts={{grid: [25, 25]}}
     >
-      <img className="box" src="https://picsum.photos/200/300" style={{ backgroundColor: "pink", minWidth:width, minHeight:height,objectFit:"contain" }} />
+      <img className="box" src="https://picsum.photos/200/300" style={{ backgroundColor: "pink", minWidth: width, minHeight: height, objectFit: "contain" }} />
 
     </ResizableBox>
   );
 }
 
 const MyHandle = React.forwardRef((props, ref) => {
-  const {handleAxis, ...restProps} = props;
+  const { handleAxis, ...restProps } = props;
   return <div ref={ref} className={`foo handle-${handleAxis}`} {...restProps} />;
 });
 function App() {
+
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh", backgroundColor: "gray" }}  >
+    <>
 
 
-      {/* <Editor/> */}
-      <div style={{ marginTop: "50px" }}>
-        <Editor2 />
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "100vh", backgroundColor: "gray" }}  >
+
+
+
+
+
+        {/* <div style={{ backgroundColor: "pink" }}
+
+        draggable="true"
+        onDragStart={function (e) {
+          // e.dataTransfer.effectAllowed="none"
+
+          e.target.style.opacity = '0.4';
+
+          e.dataTransfer.setData('aaa', JSON.stringify({name:"bbdkslk"}));
+
+        }}
+        onDrag={function (e) {
+
+
+        }}
+        onDragEnd={function (e) {
+          e.target.style.opacity = '1';
+
+        }}
+
+      >aaaaa</div>
+
+      <div style={{ backgroundColor: "lightblue" }}
+
+        draggable
+        onDragEnter={function (e) {
+          e.preventDefault();
+
+          e.target.style.backgroundColor = "blue"
+
+
+
+        }}
+        onDragLeave={function (e) {
+
+          e.target.style.backgroundColor = "lightblue"
+
+        }}
+
+        onDragOver={function (e) {
+          e.preventDefault()
+        }}
+
+        onDrop={function (e) {
+          e.target.style.backgroundColor = "lightblue"
+          const sourceE = e.dataTransfer.getData("aaa")
+          console.log( JSON.parse(sourceE).name)
+        }}
+
+      // onDrag={function (e) {
+
+      //   console.log("dragStart")
+      // }}
+      // onDragEnd={function (e) {
+
+      //   console.log("dragEnd")
+      // }}
+
+      >bbb</div> */}
+
+
+        {/* <Editor/> */}
+        <div style={{ marginTop: "50px" }}>
+          <Editor2 />
+        </div>
+        {/* <MyComponent      /> */}
+
+
+
+
+
       </div>
-      {/* <MyComponent      /> */}
-
-
-      {/* <img src={"https://picsum.photos/400/500"} width={300} height={200} style={{objectFit:"contain",background:"lightblue"}} alt="BigCo Inc. logo"/> */}
-
-
-    </div>
+    </>
   );
 }
 

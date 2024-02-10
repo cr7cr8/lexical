@@ -156,7 +156,7 @@ export function MentionPlugin({ getFetchUrl, organizeResturnedList }) {
                     const focusOffset = selection.focus.offset
 
                     const word = getWordAt(text, focusOffset - 1)
-                   // console.log("pos word is", word)
+                    // console.log("pos word is", word)
                     if (word && String(word).charAt(0) === "@") {
                         setX(window.getSelection().getRangeAt(0).getBoundingClientRect().x)
                         setY(window.getSelection().getRangeAt(0).getBoundingClientRect().y)

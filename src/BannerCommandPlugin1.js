@@ -857,7 +857,11 @@ export function BannerCommandPlugin1() {
                     btn.draggable = "true"
 
                     btn.onclick = function (e) {
+                       
                         console.log(node)
+
+
+
                         // editor.update(() => {
                         //     node.setWidth(100 * Math.random())
                         // })

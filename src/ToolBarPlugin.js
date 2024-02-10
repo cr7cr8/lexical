@@ -131,7 +131,7 @@ export function ToolBarPlugin({ buttons, ...props }) {
                             setX(window.getSelection().getRangeAt(0).getBoundingClientRect().x)
                             setY(window.getSelection().getRangeAt(0).getBoundingClientRect().y)
                         }
-                        else{
+                        else {
                             window.getSelection().addRange()
                         }
 
@@ -166,10 +166,21 @@ export function FormatButton() {
         <div>{
             ['Bold', 'Italic', 'Underline', 'Code', 'Highlight', 'Strikethrough', 'Subscript', 'Superscript']
                 .map((value, index) => <button key={index} onClick={() => {
-                    editor.dispatchCommand(FORMAT_TEXT_COMMAND, value.toLowerCase())
+                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, value.toLowerCase())
 
 
+                    editor.update(() => {
+                        const selection = $getSelection()
+                        const nodes = selection.extract()
 
+                        // nodes.forEach(node => {
+
+                        //      console.log(node.getType(),node.getType()==="text"&&node.getTextContent())
+
+                        // })
+
+
+                    })
 
 
                     // editor.update(() => {
